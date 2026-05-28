@@ -30,8 +30,10 @@ body,#app{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georg
 .abtn:hover{background:var(--golds)}
 .abtn.pl{background:var(--crim);color:var(--golds)}
 .anote{font-size:10px;color:var(--mut);margin-top:7px;font-style:italic}
-.slbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.14em;color:var(--mut);padding:12px 18px 5px;text-transform:uppercase}
-.ptxt{font-size:15px;line-height:1.65;color:var(--text);font-style:italic;margin-bottom:12px}
+.slbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.14em;color:var(--mut);padding:12px 18px 5px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.slbl::before,.slbl::after{content:'';flex:1;height:0.5px;background:var(--bord)}
+.slbl::before{max-width:16px}
+  .ptxt{font-size:15px;line-height:1.65;color:var(--text);font-style:italic;margin-bottom:12px}
 .jinp{width:100%;background:var(--bg);border:0.5px solid var(--bord);border-radius:9px;padding:10px 12px;font-size:14px;color:var(--text);font-family:'Crimson Pro',serif;line-height:1.6;resize:none;outline:none;transition:border-color .2s}
 .jinp::placeholder{color:var(--dim)}
 .jinp:focus{border-color:var(--goldd)}
@@ -90,13 +92,11 @@ body,#app{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georg
 .badge{background:var(--surf);border:0.5px solid var(--bordg);border-radius:11px;padding:3px 9px;font-size:10px;color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.05em}
 .fadeu{animation:fadeUp .4s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes flyRaven{
-  0%{transform:translateX(0) translateY(0) rotate(-8deg);opacity:0}
-  8%{opacity:1}
-  50%{transform:translateX(55vw) translateY(-25px) rotate(3deg);opacity:0.5}
-  92%{opacity:0.3}
-  100%{transform:translateX(115vw) translateY(8px) rotate(-5deg);opacity:0}
-}
+@keyframes ravenPulse{0%,100%{opacity:0.07}50%{opacity:0.28}}
+@keyframes ravenPulseR{0%,100%{opacity:0.1}60%{opacity:0.32}}
+.raven-l{animation:ravenPulse 6s ease-in-out infinite}
+.raven-r{animation:ravenPulseR 7s ease-in-out 2s infinite}
+  
 @media(min-width:600px){
   .ptxt{font-size:16px;line-height:1.75}
   .mtxt{font-size:15px;line-height:1.85}
@@ -391,20 +391,6 @@ const PATHS=[
 ];
 
 let S={screen:'onboard',tab:'today',name:'',entries:[],path:null,playRune:false,showMeaning:false,libSel:null,pathExp:null,runeText:'',pathText:'',savedRune:false,savedPath:false,editRuneIdx:-1,editPathIdx:-1};
-  
-function spawnRavens(){
-  const count=3;
-  for(let i=0;i<count;i++){
-    setTimeout(()=>{
-      const el=document.createElement('div');
-      const size=28+Math.random()*18;
-      el.style.cssText=`position:fixed;top:${8+Math.random()*35}%;left:-80px;z-index:9999;pointer-events:none;animation:flyRaven ${7+Math.random()*5}s ease-in-out forwards`;
-      el.innerHTML=`<svg width="${size}" height="${size}" viewBox="0 0 64 64" style="fill:#d4aa5c;opacity:${0.22+Math.random()*0.18}"><path d="M58,10 C54,8 49,9 46,11 C43,7 38,5 33,6 C28,7 24,10 22,14 C18,12 13,12 9,14 C5,16 2,20 2,25 C2,28 3,30 5,32 C3,35 3,39 5,42 C7,38 10,35 14,34 C16,37 19,39 22,40 C20,43 20,47 22,50 C24,46 27,43 31,42 C31,45 32,48 34,50 C35,47 35,44 34,41 C38,40 41,37 42,33 C45,36 46,40 45,44 C48,41 49,37 48,33 C51,32 54,29 55,26 C58,24 61,20 61,16 C61,13 60,11 58,10Z M38,22 C39,20 42,19 44,21 C42,22 40,22 38,22Z"/></svg>`;
-      document.body.appendChild(el);
-      setTimeout(()=>el.remove(),14000);
-    },i*2200+Math.random()*800);
-  }
-}
 
 function loadState(){  
   try{const n=localStorage.getItem('rr_name2');if(n)S.name=n;}catch{}
@@ -413,7 +399,6 @@ function loadState(){
   try{const p=localStorage.getItem('rr_path2');if(p)S.path=p;}catch{}
   
 render();
-  spawnRavens();
 }
 
 function doOnboard(n){S.name=n;S.screen='subscribe';localStorage.setItem('rr_name2',n);render();}
@@ -494,7 +479,15 @@ function render(){
 
 function renderOnboard(){
   return `<div class="obwrap fadeu">
-    ${svgMark(96,'ob')}
+ <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:4px">
+      <svg class="raven-l" viewBox="0 0 40 48" width="32" height="38" style="fill:#d4aa5c;transform:scaleX(-1)">
+        <path d="M22,5 C27,5 31,9 31,14 C31,16 30,18 29,19 C31,21 33,25 31,29 C29,27 27,26 25,27 L25,40 C25,42 23,44 21,44 L19,44 C19,41 18,38 17,36 C15,38 13,41 11,41 C10,38 11,35 13,33 C11,31 10,28 11,26 C11,22 13,19 16,18 C15,17 14,15 14,13 C14,9 17,5 22,5Z M28,7 C31,6 34,7 35,10 C33,10 31,11 30,13 C29,11 28,9 28,7Z"/>
+      </svg>
+      ${svgMark(96,'ob')}
+      <svg class="raven-r" viewBox="0 0 40 48" width="32" height="38" style="fill:#d4aa5c">
+        <path d="M22,5 C27,5 31,9 31,14 C31,16 30,18 29,19 C31,21 33,25 31,29 C29,27 27,26 25,27 L25,40 C25,42 23,44 21,44 L19,44 C19,41 18,38 17,36 C15,38 13,41 11,41 C10,38 11,35 13,33 C11,31 10,28 11,26 C11,22 13,19 16,18 C15,17 14,15 14,13 C14,9 17,5 22,5Z M28,7 C31,6 34,7 35,10 C33,10 31,11 30,13 C29,11 28,9 28,7Z"/>
+      </svg>
+    </div>
     <div style="font-family:'Cinzel',serif;font-size:19px;letter-spacing:.12em;color:#e2c98a;font-weight:600;margin:14px 0 8px">Runes &amp; Ravens</div>
     <div style="font-size:14px;color:#7a7080;line-height:1.7;font-style:italic;max-width:270px;margin-bottom:32px">A daily self-discovery practice built around the 24 Elder Futhark runes and inner narrative work.</div>
     <input class="obinp" id="obname" placeholder="Your first name" value="${S.name||''}"/>
