@@ -224,14 +224,153 @@ const RUNES=[
 ];
 
 const PATHS=[
-  {id:'shadow',icon:'🌑',title:'Shadow Work',desc:'30 days · What you\'ve buried',
-   about:'A structured journey through the parts of yourself you have been managing around rather than meeting. Built around the runes of disruption, constraint, and endurance.',days:30},
-  {id:'relations',icon:'🔗',title:'Relationships & Boundaries',desc:'30 days · Who you allow in',
-   about:'Exploring the stories you carry about love, belonging, and where you end and others begin. Built around Gebo, Wunjo, Algiz, and Mannaz.',days:30},
-  {id:'ancestral',icon:'🌿',title:'Ancestral Patterns',desc:'21 days · What was handed down',
-   about:'A 21-day journey through inherited narratives. What your lineage gave you, what it cost you, and what you choose to carry forward.',days:21},
-  {id:'power',icon:'🔥',title:'Reclaiming Your Power',desc:'14 days · Stop making yourself small',
-   about:'A direct path for anyone who has been managing their energy down to keep the peace. Uruz, Sowilo, Tiwaz.',days:14},
+  // ── PATH 1: SHADOW WORK (30 days) ─────────────────────────
+  {
+    id:'shadow', icon:'🌑', title:'Shadow Work', desc:'30 days · What you\'ve buried',
+    about:'A structured journey through the parts of yourself you have been managing around rather than meeting. Each day builds on the last. You will not be asked to perform healing. You will be asked to look.',
+    days:30,
+    rune:'ᚺ',
+    prompts:[
+      // WEEK 1 — MAPPING THE SHADOW
+      'Before we go anywhere, let\'s locate where you are. What emotion do you work hardest to keep other people from seeing? Not the one you hide from yourself. The one you manage in front of others.',
+      'Think of the last time you reacted to something more strongly than the situation seemed to warrant. What was underneath that reaction that had nothing to do with what just happened?',
+      'What do you judge most harshly in other people? Describe it specifically. Now ask: where does that same quality live in you, even in a form you\'d rather not recognize?',
+      'What part of yourself did you learn to hide early? What happened — once, or many times — that taught you that part was not safe to show?',
+      'What do you want that you have never said out loud to anyone? Not a goal. A want. Something that still feels a little shameful or too big or too childish to claim.',
+      'Where in your life are you performing a version of yourself that is not quite true? Who is in the audience? What are you afraid they would do if you stopped performing?',
+      'What would the people who know you best be surprised to learn about your inner life? What do you keep that carefully separated from how you present?',
+      // WEEK 2 — THE ORIGIN
+      'Think of a quality you consider a flaw in yourself. When did you first decide it was a flaw? Who was present? Whose voice made that verdict?',
+      'What did you have to become in order to be loved in your family? What did you have to stop being?',
+      'What is the earliest memory you have of feeling ashamed? Not guilty. Ashamed. Walk back into it slowly. What was the lesson that moment installed?',
+      'Who in your life have you spent the most energy trying to earn approval from? What have you changed about yourself in service of that approval?',
+      'What emotion were you not allowed to have growing up — not explicitly forbidden, but quietly unwelcome? How does that emotion come out sideways now?',
+      'What story about yourself have you been carrying since childhood that you have never stopped to actually question? Where did it come from? Is it true?',
+      'Write about the person you were before you learned to make yourself more manageable. What did they want? What did they know?',
+      // WEEK 3 — MEETING WHAT YOU HID
+      'What aspect of yourself are you most afraid other people will find out about? Sit with that. What would actually happen if they knew?',
+      'Where in your life are you living someone else\'s definition of a good life? Not a bad life. A fine life. One you chose without ever fully choosing.',
+      'What are you angry about that you have never let yourself fully feel? Not irritated. Not frustrated. Actually angry. Where does it live in your body?',
+      'What have you given up — a dream, a part of yourself, a direction — that you told yourself you were fine letting go? Were you actually fine?',
+      'Who do you envy? Be specific. Now look at what that envy is pointing to. What does it say about what you actually want that you have not been willing to pursue?',
+      'What do you do when you are hurting that you would not want anyone to see? Not crisis behavior. The quiet private thing. What does it say about what you believe you deserve?',
+      'Write a letter to the part of yourself you have been managing around. Tell it why you kept it locked up. Tell it what it cost you.',
+      // WEEK 4 — INTEGRATION
+      'The shadow is not your enemy. It is the part of you that went underground to survive. What does that part need from you now that survival is no longer the only priority?',
+      'What would you do differently if you were not afraid of what people would think? Not in theory. In your actual life, this week.',
+      'What has your shadow been protecting you from? What would you have to risk if you let it out into the light?',
+      'Where in your life are you still following rules that were written for a version of you that no longer exists?',
+      'What would you have to forgive in yourself to stop carrying the weight you are carrying? Not excuse. Forgive.',
+      'Write down three things you have been ashamed of. Now write, for each one, what it would mean to simply accept that those things are part of your story.',
+      'What is the bravest true thing you could say about yourself right now, in this season of your life?',
+      'You have been looking at yourself honestly for almost a month. What has shifted? Not what has been solved. What has shifted.',
+      'Write a letter from the integrated version of yourself to the one who started this path. What do you want them to know?',
+    ]
+  },
+ 
+  // ── PATH 2: RELATIONSHIPS & BOUNDARIES (30 days) ──────────
+  {
+    id:'relations', icon:'🔗', title:'Relationships & Boundaries', desc:'30 days · Who you allow in',
+    about:'An honest look at how you love, how you people-please, where you disappear, and what it would mean to take up your full space in your relationships without apology.',
+    days:30,
+    rune:'ᚷ',
+    prompts:[
+      // WEEK 1 — THE PATTERN MAP
+      'Before anything else, pick the relationship in your life that costs you the most energy. Not the worst one. The one that quietly drains you. Describe what it actually feels like to be in it.',
+      'What did love look like in your home when you were growing up? Not what was said about love. What did it actually look like in practice, day to day?',
+      'Where did you learn that having needs was a problem? Who taught you that, and how?',
+      'What do you do when someone you love is disappointed in you? Walk through it slowly. Where in your body do you feel it? What do you do to make it stop?',
+      'What is your first move when a relationship starts to feel unsafe? Do you get smaller, louder, busier, more helpful? What is your particular strategy?',
+      'Who in your life do you say yes to when you mean no? What are you afraid would happen if you said the truth?',
+      'What do you need from your relationships that you have never directly asked for? Why haven\'t you asked?',
+      // WEEK 2 — WHERE YOU DISAPPEAR
+      'Describe a relationship where you changed yourself significantly to keep the peace. What did you give up? What did you get in exchange?',
+      'What are the unspoken rules in your closest relationships — the things everyone knows but no one says? Who enforces them?',
+      'When someone pushes past a limit you have, what do you tell yourself to justify not naming it? What is the story that makes the boundary feel too risky to hold?',
+      'Who do you protect at your own expense? Not out of genuine care. Out of fear of what happens if you stop.',
+      'What is a version of yourself that shows up in relationship that you are not proud of? Not a monster. Just a version. Where does it come from?',
+      'Think about a relationship that ended, painfully. Not the other person\'s part in it. What was your part? What did you bring that you carry into other relationships?',
+      'Where in your relationships are you waiting to be chosen, seen, or proven worthy before you allow yourself to fully show up?',
+      // WEEK 3 — BUILDING THE BOUNDARY
+      'What is the difference between a boundary and a wall? Where in your life are you using one when you actually need the other?',
+      'What is the most important thing you need people to understand about you that you almost never say directly?',
+      'Write about a time you held a boundary and it cost you something. A relationship, approval, comfort. Was it worth it? What did it teach you?',
+      'What would your relationships look like if you said what you actually thought, one third more often than you currently do?',
+      'What do you give in relationships that you do not give yourself? Patience, grace, attention, forgiveness. Pick one and sit with why.',
+      'Who in your life needs you to stay small in order for the relationship to stay comfortable? Have you ever named that to yourself before?',
+      'Write the conversation you have never had with someone important to you. Not to send. To hear yourself say it.',
+      // WEEK 4 — TOWARD REAL CONNECTION
+      'What would it mean to be fully known by someone and loved anyway? Does that feel possible to you? What makes it feel possible or impossible?',
+      'What do you bring to the people you love that is genuinely yours — not performed, not strategic, just actually you?',
+      'Where in your relationships are you showing up from your strongest self, and where are you showing up from your fear?',
+      'What would you stop tolerating if you truly believed you deserved better? Not someday. Now.',
+      'Write about a relationship that taught you something about yourself that no other experience could have. What did it cost? What did it give?',
+      'What kind of love do you actually want — not what you have settled for, not what you think you deserve, but what you actually want?',
+      'Who are the people in your life that make you feel most like yourself? What is it about those relationships that works?',
+      'What would your closest relationships look like in one year if you practiced everything you have been sitting with this month?',
+      'Write a letter to the relationships that are still ahead of you. What do you want them to know about who you are becoming?',
+    ]
+  },
+ 
+  // ── PATH 3: ANCESTRAL PATTERNS (21 days) ──────────────────
+  {
+    id:'ancestral', icon:'🌿', title:'Ancestral Patterns', desc:'21 days · What was handed down',
+    about:'A 21-day descent into the inherited. What your line carried before you arrived. What was handed to you without explanation. What you carry forward, and what you choose to set down.',
+    days:21,
+    rune:'ᛟ',
+    prompts:[
+      // WEEK 1 — MAPPING THE LINEAGE
+      'You did not arrive from nowhere. Before we go anywhere else, sit with this: what do you know about what your family survived before you were born? Not the official story. What was underneath it?',
+      'What is the central wound of your family line — the thing that never got healed, that just got passed on? You do not need the full story. What is the feeling at the center of it?',
+      'What behavior do you have that you recognize from a parent? Not a good one. The one you swore you would not repeat and find yourself doing anyway.',
+      'What was never spoken about in your family? Not the thing they hid from the world. The thing they hid from each other. What was everyone silently organizing around?',
+      'What did your family believe about money, about safety, about what life does to people? Not the stated belief. The one lived out in daily choices.',
+      'What survival skill was prized in your family that became a liability when survival was no longer the only issue? Emotional control, self-sufficiency, keeping the peace?',
+      'Who in your lineage do you feel most connected to — someone you knew or someone you only know through stories? What do you sense you share with them?',
+      // WEEK 2 — WHAT WAS INHERITED
+      'What are you afraid of that you did not develop from your own experience? A fear that feels older than you. What is it, and whose was it first?',
+      'What patterns around love, loyalty, or belonging were modeled for you that you are still operating from, even now?',
+      'What did your family teach you about your own worth? Not what they said. What they demonstrated, in the way they treated themselves and each other.',
+      'Where in your body do you feel your family\'s history? Not your personal history. Theirs. Where does it live when it surfaces?',
+      'What stories were told repeatedly in your family — the ones that became mythology? What did those stories teach you about who your people are, and therefore who you are?',
+      'What was not allowed to be grieved in your family? A loss, a failure, a person, a possibility. What got skipped over and where did it go?',
+      'What did your ancestors not have access to — safety, education, freedom, self-determination — that you have? What do you do with that?',
+      // WEEK 3 — THE BREAKING POINT
+      'You are the place where something changes. Not because you are special. Because you are aware. What is the pattern that ends with you?',
+      'What would it mean to honor your lineage without repeating its wounds? Can both things be true at once — that you came from this and that you are not bound by it?',
+      'Write about one thing you inherited that you want to keep. A strength, a way of moving through the world, something that served your people and serves you.',
+      'Write about one thing you inherited that you are consciously choosing to set down. Name it clearly. Say why.',
+      'What would you say to your ancestors if you could? Not to the idealized version. To the actual human beings who were afraid and did their best and also caused harm.',
+      'What do you want to pass forward — to your children, your community, the people you influence? What does the healed version of your lineage look like?',
+      'You have been here for 21 days. What feels different? Not resolved. Different. Where is there more space than there was when you started?',
+    ]
+  },
+ 
+  // ── PATH 4: RECLAIMING YOUR POWER (14 days) ───────────────
+  {
+    id:'power', icon:'🔥', title:'Reclaiming Your Power', desc:'14 days · Stop making yourself small',
+    about:'Short and direct. This path is for people who already know they have been making themselves smaller than they are. We are going to locate when it started, what it costs, and what it looks like to stop.',
+    days:14,
+    rune:'ᚢ',
+    prompts:[
+      // WEEK 1 — LOCATING THE DIMINISHMENT
+      'Where in your life are you currently the smaller version of yourself? Not in a crisis. In the ordinary daily texture of your life. Where do you consistently shrink?',
+      'When did you first learn that being too much was a problem? How old were you? What happened? What did you decide in that moment about how much of yourself was acceptable?',
+      'Who specifically do you make yourself smaller around? Name them. What are you afraid would happen if you took up your full space in their presence?',
+      'What is a want or a need you have been treating as unreasonable that is actually completely reasonable? Say it plainly. No qualifications.',
+      'What has making yourself small cost you? Specifically. Opportunities you did not take. Things you did not say. Versions of your life you did not pursue.',
+      'What do you tell yourself about people who take up space unapologetically? Is that belief protecting you or keeping you contained?',
+      'Write about a time you were fully yourself — fully powerful, fully present, fully occupying your own life. What were the conditions? What made it possible?',
+      // WEEK 2 — TAKING UP SPACE
+      'What would you do this week if you were not managing how you come across to others? Not dramatically. Just one real thing.',
+      'Where are you waiting for permission to proceed? Who are you waiting for it from? What would you do if it never came?',
+      'What do you know that you pretend not to know, because knowing it out loud would require you to act?',
+      'What would the version of you that does not apologize for existing do differently today? Walk through it concretely.',
+      'Who in your life responds badly when you take up space? What does that tell you about the function you serve in their life?',
+      'What is one place — a relationship, a job, a room, a conversation — where you are going to stop making yourself smaller, starting now? What specifically will that look like?',
+      'You have fourteen days of looking at this honestly. What do you know now that you did not let yourself know before? What are you going to do with it?',
+    ]
+  },
 ];
 
 let S={screen:'onboard',tab:'today',name:'',entries:[],path:null,playRune:false,showMeaning:false,libSel:null,pathExp:null,journalText:'',saved:false};
@@ -250,7 +389,7 @@ function setPath(id){S.path=id;S.tab='paths';localStorage.setItem('rr_path2',id)
 function saveEntry(){
   if(!S.journalText.trim())return;
   const r=todayRune();
-  S.entries.push({rune:r.name,glyph:r.glyph,text:S.journalText,date:new Date().toISOString()});
+  S.entries.push({rune:r.name,glyph:r.glyph,text:S.journalText,date:new Date().toISOString(),pathId:S.path||null,pathDay:S.path?pathDay(S.path)+1:null});
   S.journalText='';S.saved=true;
   localStorage.setItem('rr_entries2',JSON.stringify(S.entries));
   render();setTimeout(()=>{S.saved=false;render();},2000);
@@ -264,6 +403,16 @@ function todayRune(){
   }
   const days=Math.floor((new Date()-new Date(2024,0,1))/86400000);
   return RUNES[(days+parseInt(seed))%RUNES.length];
+}
+  function pathDay(pathId) {
+  const key = 'rr_pathstart_' + pathId;
+  let start = localStorage.getItem(key);
+  if (!start) {
+    start = new Date().toISOString();
+    localStorage.setItem(key, start);
+  }
+  const days = Math.floor((new Date() - new Date(start)) / 86400000);
+  return days;
 }
 function fmtDate(iso){return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric'});}
 function themes(){
@@ -376,9 +525,27 @@ function renderToday(){
       </button>
     </div>
     ${S.showMeaning?`<div class="card fadeu"><p class="mtxt">${r.meaning}</p><div class="div"></div><div class="rlbl">Narrative rewrite</div><div class="rtxt">${r.rewrite}</div></div>`:''}
-    <div class="slbl">Today's prompt</div>
+   <div class="slbl">Today's prompt</div>
     <div class="card">
-      <p class="ptxt">"${r.prompt}"</p>
+      ${(()=>{
+        if(S.path){
+          const p=PATHS.find(x=>x.id===S.path);
+          const day=Math.min(pathDay(S.path), p.days-1);
+          const prompt=p.prompts[day];
+          return `
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <span style="font-family:'Cinzel',serif;font-size:9px;color:#7a6030;letter-spacing:.1em">${p.title.toUpperCase()} · DAY ${day+1} OF ${p.days}</span>
+              <span style="font-size:9px;color:#7a7080;font-style:italic">Path prompt</span>
+            </div>
+            <p class="ptxt">"${prompt}"</p>`;
+        } else {
+          return `
+            <div style="margin-bottom:10px">
+              <span style="font-size:10px;color:#7a7080;font-style:italic">Daily rune prompt</span>
+            </div>
+            <p class="ptxt">"${r.prompt}"</p>`;
+        }
+      })()}
       <textarea class="jinp" id="jinp" rows="4" placeholder="Write what comes up...">${S.journalText||''}</textarea>
       <div style="display:flex;justify-content:space-between;align-items:center">
         <button class="sbtn" id="savebtn">${S.saved?'Saved':'Save entry'}</button>
@@ -394,6 +561,7 @@ function renderToday(){
     </div>
   </div>`;
 }
+
 function bindToday(){
   const pb=document.getElementById('playbtn');
   if(pb)pb.onclick=()=>{S.playRune=true;render();setTimeout(()=>{S.playRune=false;render();},4000);};
@@ -425,22 +593,52 @@ function renderJournal(){
     </div>
     ${th.length>0?`<div class="slbl">Themes surfacing</div><div class="ttags">${th.map(([w,c])=>`<span class="ttag">${w} · ${c}x</span>`).join('')}</div>`:''}
     <div class="slbl">Entries</div>
-    ${[...S.entries].reverse().map(e=>`<div class="ecard"><div class="ehdr"><span class="erune">${e.glyph} ${e.rune}</span><span class="edate">${fmtDate(e.date)}</span></div><div class="etxt">${e.text}</div></div>`).join('')}
-  </div>`;
+${[...S.entries].reverse().map(e=>`
+      <div class="ecard">
+        <div class="ehdr">
+          <span class="erune">${e.glyph} ${e.rune}${e.pathId ? ` · <span style="color:#7a6030;font-size:10px">${PATHS.find(p=>p.id===e.pathId)?.title||''} Day ${e.pathDay||''}</span>` : ''}</span>
+          <span class="edate">${fmtDate(e.date)}</span>
+        </div>
+        <div class="etxt">${e.text}</div>
+      </div>`).join('')}
+      </div>`;
 }
 
 function renderPaths(){
   return `<div class="fadeu">
     <div class="hdr"><div class="bnm" style="font-family:'Cinzel',serif;color:#e2c98a;font-size:15px;letter-spacing:.1em">Reading Paths</div><div class="hgreet">Structured journeys in Diana's voice.</div></div>
-    ${S.path?`<div class="slbl">In progress</div>${PATHS.filter(p=>p.id===S.path).map(p=>`<div class="pcard acp"><div class="phdr"><span class="picw">${p.icon}</span><div style="flex:1"><div class="ptitle">${p.title}</div><div class="pdesc">${p.desc}</div></div><span class="badge">Active</span></div><div class="pbg"><div class="pfill" style="width:30%"></div></div><div style="font-size:10px;color:#7a7080;margin-top:5px">Day 9 of ${p.days}</div></div>`).join('')}`:''}
-    <div class="slbl">${S.path?'All paths':'Choose a path'}</div>
+ 
+    ${S.path ? (() => {
+      const p = PATHS.find(x=>x.id===S.path);
+      const day = Math.min(pathDay(S.path), p.days-1);
+      const pct = Math.round(((day+1)/p.days)*100);
+      const prompt = p.prompts[day];
+      return `
+        <div class="slbl">In progress</div>
+        <div class="pcard acp">
+          <div class="phdr"><span class="picw">${p.icon}</span><div style="flex:1"><div class="ptitle">${p.title}</div><div class="pdesc">Day ${day+1} of ${p.days}</div></div><span class="badge">${pct}%</span></div>
+          <div class="pbg"><div class="pfill" style="width:${pct}%"></div></div>
+        </div>
+        <div class="slbl">Today's path prompt</div>
+        <div class="card"><p class="ptxt">"${prompt}"</p><div style="font-size:10px;color:#7a7080;margin-top:8px;font-style:italic">Write your response in the Today tab to save it to your journal.</div></div>
+        <div style="margin:4px 14px 10px">
+          <button onclick="S.path=null;localStorage.removeItem('rr_path2');render()" style="background:none;border:none;color:#3a3545;font-size:11px;font-family:'Cinzel',serif;letter-spacing:.06em;cursor:pointer">Leave this path</button>
+        </div>`;
+    })() : ''}
+ 
+    <div class="slbl">${S.path ? 'All paths' : 'Choose a path'}</div>
     ${PATHS.map(p=>`
       <div class="pcard${S.path===p.id?' acp':''}" data-pathid="${p.id}">
         <div class="phdr"><span class="picw">${p.icon}</span><div><div class="ptitle">${p.title}</div><div class="pdesc">${p.desc}</div></div></div>
-        <div class="pbg"><div class="pfill" style="width:${S.path===p.id?'30':'0'}%"></div></div>
+        <div class="pbg"><div class="pfill" style="width:${S.path===p.id ? Math.round(((Math.min(pathDay(p.id),p.days-1)+1)/p.days)*100) : 0}%"></div></div>
       </div>
-      ${S.pathExp===p.id?`<div class="card fadeu" style="margin-top:-5px"><p class="pabout">${p.about}</p><button class="pstrt" data-startpath="${p.id}">${S.path===p.id?'Continue path':'Begin this path'}</button></div>`:''}`
-    ).join('')}
+      ${S.pathExp===p.id ? `<div class="card fadeu" style="margin-top:-5px">
+        <div style="font-size:10px;color:#7a6030;font-family:'Cinzel',serif;letter-spacing:.08em;margin-bottom:8px">${p.rune} ${p.days} DAYS</div>
+        <p class="pabout">${p.about}</p>
+        <div style="font-size:12px;color:#7a7080;margin:8px 0 12px;font-style:italic">Day 1 begins the moment you start. Each day you open the app, the next prompt is waiting.</div>
+        <button class="pstrt" data-startpath="${p.id}">${S.path===p.id ? 'Continue path' : 'Begin this path'}</button>
+      </div>` : ''}
+    `).join('')}
   </div>`;
 }
 function bindPaths(){
