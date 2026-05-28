@@ -513,8 +513,22 @@ function render(){
 function renderOnboard(){
   return `<div class="obwrap fadeu">
  <div style="display:flex;justify-content:center;margin-bottom:16px">
-<svg viewBox="0 0 200 160" width="140" height="112" style="fill:#d4aa5c;filter:drop-shadow(0 0 18px rgba(212,170,92,0.22));animation:ravenPulse 7s ease-in-out infinite">
-<path d="M155 18 C148 12 138 10 128 13 C122 8 113 6 104 9 C94 5 83 6 75 12 C64 10 53 14 46 22 C36 20 26 25 20 34 C14 42 14 53 19 61 C15 68 15 77 20 84 C25 90 33 93 41 91 C44 97 50 102 57 103 C57 110 59 117 64 121 C68 115 69 107 67 100 C74 99 80 95 83 89 C88 94 91 101 90 108 C95 102 97 94 94 87 C100 83 104 77 104 70 C109 74 112 80 111 87 C116 80 116 72 112 65 C117 59 119 51 116 44 C122 40 129 40 134 44 C131 38 125 34 118 33 C122 27 130 24 138 26 C143 22 151 20 155 18 Z M60 65 C57 60 58 54 62 51 C66 54 67 61 64 65 Z"/>
+<svg viewBox="0 0 100 90" width="150" height="135" style="filter:drop-shadow(0 0 18px rgba(212,170,92,0.28));animation:ravenPulse 7s ease-in-out infinite" aria-hidden="true">
+  <!-- Round head -->
+  <circle cx="60" cy="34" r="27" fill="#d4aa5c"/>
+  <!-- Upper beak - long curved hooked bill pointing left -->
+  <path fill="#d4aa5c" d="M 35,24 C 24,24 12,28 4,36 C 2,40 4,44 8,46 C 14,48 22,46 28,42 L 35,40 Z"/>
+  <!-- Lower mandible - shorter, creates beak gap -->
+  <path fill="#d4aa5c" d="M 35,40 C 26,42 16,44 10,50 C 16,54 24,52 32,48 Z"/>
+  <!-- Beak gap - negative space between mandibles -->
+  <path fill="#0c0b14" d="M 35,40 C 26,40 16,40 8,42 C 8,44 12,46 20,44 C 26,43 32,41 35,40 Z"/>
+  <!-- Throat and neck hackles pointing down -->
+  <path fill="#d4aa5c" d="M 38,58 C 36,66 30,76 28,84 C 34,80 38,76 40,70 C 42,76 42,84 44,90 C 48,84 48,76 46,68 C 50,74 52,82 56,88 C 58,80 56,72 54,64 Z"/>
+  <!-- Eye - large, black with faint highlight -->
+  <circle cx="68" cy="26" r="7" fill="#0c0b14"/>
+  <circle cx="66" cy="24" r="2.5" fill="#d4aa5c" opacity="0.3"/>
+  <!-- Nasal bristles at beak base -->
+  <path fill="#0c0b14" d="M 35,24 C 38,26 40,28 38,30 C 36,28 34,26 35,24 Z"/>
 </svg>
 </div>
     <div style="font-family:'Cinzel',serif;font-size:19px;letter-spacing:.12em;color:#e2c98a;font-weight:600;margin:14px 0 8px">Runes &amp; Ravens</div>
@@ -765,32 +779,155 @@ function renderDetail(){
 }
 function bindDetail(){const bb=document.getElementById('backbtn');if(bb)bb.onclick=()=>{S.libSel=null;render();};}
 let audioCtx=null,audioOn=false,drones=[];
-function buildDrone(){
+The hum is all sine waves. To get drums and throat singing we need percussion buffers and formant filtering. Replace the entire buildDrone function with this:
+jsfunction buildDrone(){
   audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-  const master=audioCtx.createGain();master.gain.setValueAtTime(0.0,audioCtx.currentTime);
-  master.gain.linearRampToValueAtTime(0.18,audioCtx.currentTime+4);
+  const master=audioCtx.createGain();
+  master.gain.setValueAtTime(0,audioCtx.currentTime);
+  master.gain.linearRampToValueAtTime(0.7,audioCtx.currentTime+3);
   master.connect(audioCtx.destination);
-  [[55,0.5],[110,0.25],[82.4,0.15],[73.4,0.1],[165,0.06]].forEach(([freq,vol])=>{
+
+  // ── FRAME DRUM ─────────────────────────────────────────────
+  function drum(time,vol=1){
+    const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*1.2,audioCtx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++){
+      const t=i/audioCtx.sampleRate;
+      d[i]=(Math.random()*2-1)*Math.exp(-t*12)*0.9
+           +Math.sin(2*Math.PI*62*t)*Math.exp(-t*8)*0.6
+           +Math.sin(2*Math.PI*38*t)*Math.exp(-t*5)*0.4;
+    }
+    const src=audioCtx.createBufferSource();
+    src.buffer=buf;
+    const g=audioCtx.createGain();g.gain.value=vol*0.9;
+    const lp=audioCtx.createBiquadFilter();
+    lp.type='lowpass';lp.frequency.value=280;lp.Q.value=1.2;
+    src.connect(lp);lp.connect(g);g.connect(master);
+    src.start(time);
+    drones.push(src);
+  }
+
+  // ── ACCENT DRUM (lighter hit) ───────────────────────────────
+  function accentDrum(time,vol=0.5){
+    const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*0.6,audioCtx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++){
+      const t=i/audioCtx.sampleRate;
+      d[i]=(Math.random()*2-1)*Math.exp(-t*18)*0.5
+           +Math.sin(2*Math.PI*90*t)*Math.exp(-t*14)*0.3;
+    }
+    const src=audioCtx.createBufferSource();
+    src.buffer=buf;
+    const g=audioCtx.createGain();g.gain.value=vol*0.6;
+    const bp=audioCtx.createBiquadFilter();
+    bp.type='bandpass';bp.frequency.value=180;bp.Q.value=2;
+    src.connect(bp);bp.connect(g);g.connect(master);
+    src.start(time);
+    drones.push(src);
+  }
+
+  // ── THROAT SINGING (formant stack) ─────────────────────────
+  function throat(){
+    const fundamental=82.4;
+    const formants=[
+      {freq:220,q:28,vol:0.22},
+      {freq:440,q:22,vol:0.18},
+      {freq:880,q:18,vol:0.12},
+      {freq:1100,q:30,vol:0.08},
+      {freq:1650,q:35,vol:0.05},
+    ];
+    const base=audioCtx.createOscillator();
+    base.type='sawtooth';
+    base.frequency.value=fundamental;
+    const baseGain=audioCtx.createGain();
+    baseGain.gain.value=0.001;
+    base.connect(baseGain);
+    formants.forEach(f=>{
+      const bp=audioCtx.createBiquadFilter();
+      bp.type='bandpass';
+      bp.frequency.value=f.freq;
+      bp.Q.value=f.q;
+      const g=audioCtx.createGain();
+      g.gain.value=f.vol;
+      baseGain.connect(bp);bp.connect(g);g.connect(master);
+    });
+    // Slow vibrato
+    const vib=audioCtx.createOscillator();
+    vib.frequency.value=4.8;
+    const vibGain=audioCtx.createGain();
+    vibGain.gain.value=1.4;
+    vib.connect(vibGain);
+    vibGain.connect(base.frequency);
+    // Slow swell
+    const t=audioCtx.currentTime;
+    baseGain.gain.setValueAtTime(0,t+2);
+    baseGain.gain.linearRampToValueAtTime(0.5,t+9);
+    baseGain.gain.setTargetAtTime(0.35,t+9,4);
+    base.start(t+2);vib.start(t+2);
+    drones.push(base,vib);
+  }
+
+  // ── LUR HORN DRONE ─────────────────────────────────────────
+  function horn(){
     const o=audioCtx.createOscillator();
-    const g=audioCtx.createGain();
-    o.type='sine';o.frequency.value=freq;
-    g.gain.value=vol;
+    o.type='triangle';o.frequency.value=55;
+    const o2=audioCtx.createOscillator();
+    o2.type='sine';o2.frequency.value=110.2;
+    const g=audioCtx.createGain();g.gain.value=0;
+    const g2=audioCtx.createGain();g2.gain.value=0.08;
+    const t=audioCtx.currentTime;
+    g.gain.linearRampToValueAtTime(0.14,t+6);
     o.connect(g);g.connect(master);
-    o.start();drones.push(o);
-  });
-  const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate);
-  const d=buf.getChannelData(0);
-  for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*0.012;
-  const src=audioCtx.createBufferSource();
-  src.buffer=buf;src.loop=true;
-  const ng=audioCtx.createGain();ng.gain.value=0.04;
-  src.connect(ng);ng.connect(master);src.start();
-  drones.push(src);
+    o2.connect(g2);g2.connect(master);
+    o.start();o2.start();
+    drones.push(o,o2);
+  }
+
+  // ── WIND ───────────────────────────────────────────────────
+  function wind(){
+    const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*4,audioCtx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+    const src=audioCtx.createBufferSource();
+    src.buffer=buf;src.loop=true;
+    const bp=audioCtx.createBiquadFilter();
+    bp.type='bandpass';bp.frequency.value=600;bp.Q.value=0.4;
+    const g=audioCtx.createGain();g.gain.value=0.03;
+    src.connect(bp);bp.connect(g);g.connect(master);
+    src.start();drones.push(src);
+  }
+
+  // ── DRUM PATTERN: 6/8 frame drum feel ──────────────────────
+  const bpm=52;
+  const beat=60/bpm;
+  const now=audioCtx.currentTime+0.1;
+  const bars=32;
+  for(let b=0;b<bars;b++){
+    const t=now+b*beat*6;
+    drum(t,1.0);              // beat 1 — strong
+    accentDrum(t+beat*2,0.5); // beat 3 — light
+    drum(t+beat*3,0.8);       // beat 4 — medium
+    accentDrum(t+beat*4,0.4); // beat 5 — light
+    if(b%4===0) drum(t+beat*1.5,0.3); // occasional ghost
+  }
+
+  throat();
+  horn();
+  wind();
+
+  // Re-trigger drums after pattern ends
   setInterval(()=>{
     if(!audioCtx)return;
-    const t=audioCtx.currentTime;
-    master.gain.setTargetAtTime(0.12+Math.random()*0.08,t,8);
-  },6000);
+    const t=audioCtx.currentTime+0.05;
+    for(let b=0;b<bars;b++){
+      const bt=t+b*beat*6;
+      drum(bt,1.0);
+      accentDrum(bt+beat*2,0.5);
+      drum(bt+beat*3,0.8);
+      accentDrum(bt+beat*4,0.4);
+      if(b%4===0) drum(bt+beat*1.5,0.3);
+    }
+  },(bars*beat*6*1000)-200);
 }
 function toggleAudio(){
   audioOn=!audioOn;
