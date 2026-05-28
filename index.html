@@ -92,10 +92,43 @@ body,#app{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georg
 .badge{background:var(--surf);border:0.5px solid var(--bordg);border-radius:11px;padding:3px 9px;font-size:10px;color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.05em}
 .fadeu{animation:fadeUp .4s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes ravenPulse{0%,100%{opacity:0.07}50%{opacity:0.28}}
-@keyframes ravenPulseR{0%,100%{opacity:0.1}60%{opacity:0.32}}
-.raven-l{animation:ravenPulse 6s ease-in-out infinite}
-.raven-r{animation:ravenPulseR 7s ease-in-out 2s infinite}
+@keyframes ravenPulse{
+  0%,100%{
+    opacity:.10;
+    transform:translateY(0px) scale(1);
+  }
+  50%{
+    opacity:.26;
+    transform:translateY(-3px) scale(1.03);
+  }
+}
+
+@keyframes ravenPulseR{
+  0%,100%{
+    opacity:.12;
+    transform:translateY(0px) scale(1);
+  }
+  50%{
+    opacity:.30;
+    transform:translateY(-4px) scale(1.04);
+  }
+}
+.raven-l,
+.raven-r{
+  filter:
+    drop-shadow(0 0 10px rgba(212,170,92,.18))
+    drop-shadow(0 0 24px rgba(212,170,92,.08));
+  transform-origin:center;
+  will-change:transform,opacity;
+}
+
+.raven-l{
+  animation:ravenPulse 7s ease-in-out infinite;
+}
+
+.raven-r{
+  animation:ravenPulseR 8s ease-in-out 1.5s infinite;
+}
   
 @media(min-width:600px){
   .ptxt{font-size:16px;line-height:1.75}
@@ -480,13 +513,47 @@ function render(){
 function renderOnboard(){
   return `<div class="obwrap fadeu">
  <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:4px">
-      <svg class="raven-l" viewBox="0 0 40 48" width="32" height="38" style="fill:#d4aa5c;transform:scaleX(-1)">
-        <path d="M22,5 C27,5 31,9 31,14 C31,16 30,18 29,19 C31,21 33,25 31,29 C29,27 27,26 25,27 L25,40 C25,42 23,44 21,44 L19,44 C19,41 18,38 17,36 C15,38 13,41 11,41 C10,38 11,35 13,33 C11,31 10,28 11,26 C11,22 13,19 16,18 C15,17 14,15 14,13 C14,9 17,5 22,5Z M28,7 C31,6 34,7 35,10 C33,10 31,11 30,13 C29,11 28,9 28,7Z"/>
-      </svg>
+<svg class="raven-l" viewBox="0 0 120 80" width="42" height="42"
+     style="fill:#d4aa5c;transform:scaleX(-1)">
+  <path d="
+    M18 45
+    C22 34, 30 26, 42 22
+    C48 12, 63 10, 74 18
+    C82 24, 86 32, 87 42
+    C94 43, 101 47, 106 54
+    C96 54, 89 58, 84 64
+    C77 61, 73 55, 70 49
+    C64 57, 55 61, 43 61
+    C34 61, 25 57, 18 45
+    Z
+
+    M72 20
+    L95 14
+    L81 26
+    Z
+  "/>
+</svg>
       ${svgMark(96,'ob')}
-      <svg class="raven-r" viewBox="0 0 40 48" width="32" height="38" style="fill:#d4aa5c">
-        <path d="M22,5 C27,5 31,9 31,14 C31,16 30,18 29,19 C31,21 33,25 31,29 C29,27 27,26 25,27 L25,40 C25,42 23,44 21,44 L19,44 C19,41 18,38 17,36 C15,38 13,41 11,41 C10,38 11,35 13,33 C11,31 10,28 11,26 C11,22 13,19 16,18 C15,17 14,15 14,13 C14,9 17,5 22,5Z M28,7 C31,6 34,7 35,10 C33,10 31,11 30,13 C29,11 28,9 28,7Z"/>
-      </svg>
+<svg class="raven-r" viewBox="0 0 120 80" width="42" height="42"
+     style="fill:#d4aa5c">
+  <path d="
+    M18 45
+    C22 34, 30 26, 42 22
+    C48 12, 63 10, 74 18
+    C82 24, 86 32, 87 42
+    C94 43, 101 47, 106 54
+    C96 54, 89 58, 84 64
+    C77 61, 73 55, 70 49
+    C64 57, 55 61, 43 61
+    C34 61, 25 57, 18 45
+    Z
+
+    M72 20
+    L95 14
+    L81 26
+    Z
+  "/>
+</svg>
     </div>
     <div style="font-family:'Cinzel',serif;font-size:19px;letter-spacing:.12em;color:#e2c98a;font-weight:600;margin:14px 0 8px">Runes &amp; Ravens</div>
     <div style="font-size:14px;color:#7a7080;line-height:1.7;font-style:italic;max-width:270px;margin-bottom:32px">A daily self-discovery practice built around the 24 Elder Futhark runes and inner narrative work.</div>
