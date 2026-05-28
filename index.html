@@ -3,10 +3,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#07070d;--surf:#0e0e18;--card:#13131f;--cardh:#171726;
-  --gold:#c8a45a;--golds:#e2c98a;--goldd:#7a6030;
-  --crim:#6b2030;--text:#ede5d8;--mut:#7a7080;--dim:#33303a;
-  --bord:#1e1c2a;--bordg:#342c1a;
+  --bg:#0c0b14;--surf:#13121e;--card:#19182a;--cardh:#1f1e34;
+  --gold:#d4aa5c;--golds:#eacf88;--goldd:#8a6832;
+  --crim:#7a2035;--text:#f5ead8;--mut:#9080a8;--dim:#3a3050;
+  --bord:#262438;--bordg:#3c2c18;
 }
 body,#app{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,serif}
 .wrap{max-width:400px;margin:0 auto;background:var(--bg);min-height:100vh;display:flex;flex-direction:column}
@@ -90,6 +90,23 @@ body,#app{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georg
 .badge{background:var(--surf);border:0.5px solid var(--bordg);border-radius:11px;padding:3px 9px;font-size:10px;color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.05em}
 .fadeu{animation:fadeUp .4s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes flyRaven{
+  0%{transform:translateX(0) translateY(0) rotate(-8deg);opacity:0}
+  8%{opacity:1}
+  50%{transform:translateX(55vw) translateY(-25px) rotate(3deg);opacity:0.5}
+  92%{opacity:0.3}
+  100%{transform:translateX(115vw) translateY(8px) rotate(-5deg);opacity:0}
+}
+@media(min-width:600px){
+  .ptxt{font-size:16px;line-height:1.75}
+  .mtxt{font-size:15px;line-height:1.85}
+  .card{padding:20px;margin:12px 18px}
+  .cardg{padding:24px;margin:12px 18px}
+  .hdr{padding:36px 24px 18px}
+  .slbl{padding:14px 22px 6px}
+  .bnm{font-size:15px}
+  .rgl{font-size:66px}
+}
 </style>
 
 <div id="app" style="background:#07070d;min-height:100vh"></div>
@@ -375,12 +392,28 @@ const PATHS=[
 
 let S={screen:'onboard',tab:'today',name:'',entries:[],path:null,playRune:false,showMeaning:false,libSel:null,pathExp:null,runeText:'',pathText:'',savedRune:false,savedPath:false,editRuneIdx:-1,editPathIdx:-1};
   
-function loadState(){
+function spawnRavens(){
+  const count=3;
+  for(let i=0;i<count;i++){
+    setTimeout(()=>{
+      const el=document.createElement('div');
+      const size=28+Math.random()*18;
+      el.style.cssText=`position:fixed;top:${8+Math.random()*35}%;left:-80px;z-index:9999;pointer-events:none;animation:flyRaven ${7+Math.random()*5}s ease-in-out forwards`;
+      el.innerHTML=`<svg width="${size}" height="${size*0.55}" viewBox="0 0 40 22" style="fill:#d4aa5c;opacity:${0.25+Math.random()*0.2}"><path d="M20,11 C16,4 8,1 0,7 C7,11 13,12 20,11 C27,12 33,11 40,7 C32,1 24,4 20,11Z M18,11 C16,14 12,15 8,14 C12,13 16,13 18,11Z M22,11 C24,14 28,15 32,14 C28,13 24,13 22,11Z"/></svg>`;
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),14000);
+    },i*2200+Math.random()*800);
+  }
+}
+
+function loadState(){  
   try{const n=localStorage.getItem('rr_name2');if(n)S.name=n;}catch{}
   try{const sc=localStorage.getItem('rr_sub2');if(sc==='true')S.screen='app';}catch{}
   try{const e=localStorage.getItem('rr_entries2');if(e)S.entries=JSON.parse(e);}catch{}
   try{const p=localStorage.getItem('rr_path2');if(p)S.path=p;}catch{}
-  render();
+  
+render();
+  spawnRavens();
 }
 
 function doOnboard(n){S.name=n;S.screen='subscribe';localStorage.setItem('rr_name2',n);render();}
@@ -433,8 +466,8 @@ function saveRuneEntry(){
 }
 function savePathEntry(){
   if(!S.pathText.trim())return;
-  const r=todayRune();
-  const entry={rune:r.name,glyph:r.glyph,text:S.pathText,date:new Date().toISOString(),pathId:S.path,pathDay:pathDay(S.path)+1};
+  const p=PATHS.find(x=>x.id===S.path);
+  const entry={rune:p.title,glyph:p.icon,text:S.pathText,date:new Date().toISOString(),pathId:S.path,pathDay:pathDay(S.path)+1};
   if(S.editPathIdx>=0){S.entries[S.editPathIdx]=entry;S.editPathIdx=-1;}
   else S.entries.push(entry);
   S.pathText='';S.savedPath=true;
@@ -618,7 +651,7 @@ function renderJournal(){
 ${[...S.entries].reverse().map(e=>`
       <div class="ecard">
         <div class="ehdr">
-          <span class="erune">${e.glyph} ${e.rune}${e.pathId ? ` · <span style="color:#7a6030;font-size:10px">${PATHS.find(p=>p.id===e.pathId)?.title||''} Day ${e.pathDay||''}</span>` : ''}</span>
+          <span class="erune">${e.glyph} ${e.rune}${e.pathId ? ` · <span style="color:#7a6030;font-size:10px">Day ${e.pathDay||''}</span>` : ''}</span>
           <span class="edate">${fmtDate(e.date)}</span>
         </div>
         <div class="etxt">${e.text}</div>
