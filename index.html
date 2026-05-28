@@ -142,7 +142,7 @@ body,#app{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georg
 }
 </style>
 
-<div id="app" style="background:#07070d;min-height:100vh"></div>
+<div id="app" style="background:var(--bg);min-height:100vh"></div>
 
 <script>
 function svgMark(sz, uid) {
@@ -512,45 +512,11 @@ function render(){
 
 function renderOnboard(){
   return `<div class="obwrap fadeu">
- <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:4px">
-<svg class="raven-l" viewBox="0 0 140 90" width="52" height="52">
-  <path fill="#d4aa5c" d="
-    M18 56
-    C28 42,40 30,56 28
-    C63 18,79 18,92 28
-    C103 36,111 50,112 66
-    C104 62,97 61,91 63
-    C88 72,81 79,71 82
-    C59 86,44 82,34 74
-    C28 69,23 63,18 56
-    Z
-
-    M78 31
-    L118 22
-    L91 39
-    Z
-  "/>
+ <div style="display:flex;justify-content:center;margin-bottom:16px">
+<svg viewBox="0 0 200 160" width="140" height="112" style="fill:#d4aa5c;filter:drop-shadow(0 0 18px rgba(212,170,92,0.22));animation:ravenPulse 7s ease-in-out infinite">
+<path d="M155 18 C148 12 138 10 128 13 C122 8 113 6 104 9 C94 5 83 6 75 12 C64 10 53 14 46 22 C36 20 26 25 20 34 C14 42 14 53 19 61 C15 68 15 77 20 84 C25 90 33 93 41 91 C44 97 50 102 57 103 C57 110 59 117 64 121 C68 115 69 107 67 100 C74 99 80 95 83 89 C88 94 91 101 90 108 C95 102 97 94 94 87 C100 83 104 77 104 70 C109 74 112 80 111 87 C116 80 116 72 112 65 C117 59 119 51 116 44 C122 40 129 40 134 44 C131 38 125 34 118 33 C122 27 130 24 138 26 C143 22 151 20 155 18 Z M60 65 C57 60 58 54 62 51 C66 54 67 61 64 65 Z"/>
 </svg>
-      ${svgMark(96,'ob')}
-<svg class="raven-l" viewBox="0 0 140 90" width="52" height="52">
-  <path fill="#d4aa5c" d="
-    M18 56
-    C28 42,40 30,56 28
-    C63 18,79 18,92 28
-    C103 36,111 50,112 66
-    C104 62,97 61,91 63
-    C88 72,81 79,71 82
-    C59 86,44 82,34 74
-    C28 69,23 63,18 56
-    Z
-
-    M78 31
-    L118 22
-    L91 39
-    Z
-  "/>
-</svg>
-    </div>
+</div>
     <div style="font-family:'Cinzel',serif;font-size:19px;letter-spacing:.12em;color:#e2c98a;font-weight:600;margin:14px 0 8px">Runes &amp; Ravens</div>
     <div style="font-size:14px;color:#7a7080;line-height:1.7;font-style:italic;max-width:270px;margin-bottom:32px">A daily self-discovery practice built around the 24 Elder Futhark runes and inner narrative work.</div>
     <input class="obinp" id="obname" placeholder="Your first name" value="${S.name||''}"/>
@@ -598,9 +564,14 @@ function renderApp(){
   else if(S.tab==='journal')screen=renderJournal();
   else if(S.tab==='paths')screen=renderPaths();
   else screen=renderLibrary();
-  return `<div class="wrap">
+return `<div class="wrap">
     <div class="scroll">${screen}${S.libSel?renderDetail():''}</div>
-    <div class="tabbar">${tabs.map(t=>`<button class="tb${S.tab===t.id?' on':''}" data-tab="${t.id}"><span>${t.ic}</span>${t.lb}</button>`).join('')}</div>
+    <div class="tabbar">
+      ${tabs.map(t=>`<button class="tb${S.tab===t.id?' on':''}" data-tab="${t.id}"><span>${t.ic}</span>${t.lb}</button>`).join('')}
+      <button id="soundbtn" class="tb" onclick="toggleAudio()" style="min-width:48px">
+        <span style="font-size:13px">᛬</span>sound
+      </button>
+    </div>
   </div>`;
 }
 function bindApp(){
@@ -793,6 +764,45 @@ function renderDetail(){
   </div>`;
 }
 function bindDetail(){const bb=document.getElementById('backbtn');if(bb)bb.onclick=()=>{S.libSel=null;render();};}
-
+let audioCtx=null,audioOn=false,drones=[];
+function buildDrone(){
+  audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  const master=audioCtx.createGain();master.gain.setValueAtTime(0.0,audioCtx.currentTime);
+  master.gain.linearRampToValueAtTime(0.18,audioCtx.currentTime+4);
+  master.connect(audioCtx.destination);
+  [[55,0.5],[110,0.25],[82.4,0.15],[73.4,0.1],[165,0.06]].forEach(([freq,vol])=>{
+    const o=audioCtx.createOscillator();
+    const g=audioCtx.createGain();
+    o.type='sine';o.frequency.value=freq;
+    g.gain.value=vol;
+    o.connect(g);g.connect(master);
+    o.start();drones.push(o);
+  });
+  const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate);
+  const d=buf.getChannelData(0);
+  for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*0.012;
+  const src=audioCtx.createBufferSource();
+  src.buffer=buf;src.loop=true;
+  const ng=audioCtx.createGain();ng.gain.value=0.04;
+  src.connect(ng);ng.connect(master);src.start();
+  drones.push(src);
+  setInterval(()=>{
+    if(!audioCtx)return;
+    const t=audioCtx.currentTime;
+    master.gain.setTargetAtTime(0.12+Math.random()*0.08,t,8);
+  },6000);
+}
+function toggleAudio(){
+  audioOn=!audioOn;
+  if(audioOn&&!audioCtx){buildDrone();}
+  else if(audioCtx){
+    const master=audioCtx.destination;
+    if(!audioOn)drones.forEach(o=>{try{o.stop();}catch{}});
+    audioCtx.close();audioCtx=null;drones=[];
+    if(audioOn){buildDrone();}
+  }
+  const btn=document.getElementById('soundbtn');
+  if(btn)btn.textContent=audioOn?'᛬ silence':'᛬ sound';
+}
 loadState();
 </script>
