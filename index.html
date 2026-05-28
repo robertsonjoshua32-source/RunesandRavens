@@ -399,7 +399,7 @@ function spawnRavens(){
       const el=document.createElement('div');
       const size=28+Math.random()*18;
       el.style.cssText=`position:fixed;top:${8+Math.random()*35}%;left:-80px;z-index:9999;pointer-events:none;animation:flyRaven ${7+Math.random()*5}s ease-in-out forwards`;
-      el.innerHTML=`<svg width="${size}" height="${size*0.55}" viewBox="0 0 40 22" style="fill:#d4aa5c;opacity:${0.25+Math.random()*0.2}"><path d="M20,11 C16,4 8,1 0,7 C7,11 13,12 20,11 C27,12 33,11 40,7 C32,1 24,4 20,11Z M18,11 C16,14 12,15 8,14 C12,13 16,13 18,11Z M22,11 C24,14 28,15 32,14 C28,13 24,13 22,11Z"/></svg>`;
+      el.innerHTML=`<svg width="${size}" height="${size}" viewBox="0 0 64 64" style="fill:#d4aa5c;opacity:${0.22+Math.random()*0.18}"><path d="M58,10 C54,8 49,9 46,11 C43,7 38,5 33,6 C28,7 24,10 22,14 C18,12 13,12 9,14 C5,16 2,20 2,25 C2,28 3,30 5,32 C3,35 3,39 5,42 C7,38 10,35 14,34 C16,37 19,39 22,40 C20,43 20,47 22,50 C24,46 27,43 31,42 C31,45 32,48 34,50 C35,47 35,44 34,41 C38,40 41,37 42,33 C45,36 46,40 45,44 C48,41 49,37 48,33 C51,32 54,29 55,26 C58,24 61,20 61,16 C61,13 60,11 58,10Z M38,22 C39,20 42,19 44,21 C42,22 40,22 38,22Z"/></svg>`;
       document.body.appendChild(el);
       setTimeout(()=>el.remove(),14000);
     },i*2200+Math.random()*800);
