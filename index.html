@@ -236,23 +236,23 @@ const PATHS=[
 
 let S={screen:'onboard',tab:'today',name:'',entries:[],path:null,playRune:false,showMeaning:false,libSel:null,pathExp:null,journalText:'',saved:false};
 
-async function loadState(){
-  try{const n=await window.storage.get('rr_name2');if(n?.value)S.name=n.value;}catch{}
-  try{const sc=await window.storage.get('rr_sub2');if(sc?.value==='true')S.screen='app';}catch{}
-  try{const e=await window.storage.get('rr_entries2');if(e?.value)S.entries=JSON.parse(e.value);}catch{}
-  try{const p=await window.storage.get('rr_path2');if(p?.value)S.path=p.value;}catch{}
+function loadState(){
+  try{const n=localStorage.getItem('rr_name2');if(n)S.name=n;}catch{}
+  try{const sc=localStorage.getItem('rr_sub2');if(sc==='true')S.screen='app';}catch{}
+  try{const e=localStorage.getItem('rr_entries2');if(e)S.entries=JSON.parse(e);}catch{}
+  try{const p=localStorage.getItem('rr_path2');if(p)S.path=p;}catch{}
   render();
 }
 
-async function doOnboard(n){S.name=n;S.screen='subscribe';try{await window.storage.set('rr_name2',n);}catch{}render();}
-async function doSubscribe(){S.screen='app';try{await window.storage.set('rr_sub2','true');}catch{}render();}
-async function setPath(id){S.path=id;S.tab='paths';try{await window.storage.set('rr_path2',id);}catch{}render();}
-async function saveEntry(){
+function doOnboard(n){S.name=n;S.screen='subscribe';localStorage.setItem('rr_name2',n);render();}
+function doSubscribe(){S.screen='app';localStorage.setItem('rr_sub2','true');render();}
+function setPath(id){S.path=id;S.tab='paths';localStorage.setItem('rr_path2',id);render();}
+function saveEntry(){
   if(!S.journalText.trim())return;
   const r=todayRune();
   S.entries.push({rune:r.name,glyph:r.glyph,text:S.journalText,date:new Date().toISOString()});
   S.journalText='';S.saved=true;
-  try{await window.storage.set('rr_entries2',JSON.stringify(S.entries));}catch{}
+  localStorage.setItem('rr_entries2',JSON.stringify(S.entries));
   render();setTimeout(()=>{S.saved=false;render();},2000);
 }
 
