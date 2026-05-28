@@ -373,8 +373,8 @@ const PATHS=[
   },
 ];
 
-let S={screen:'onboard',tab:'today',name:'',entries:[],path:null,playRune:false,showMeaning:false,libSel:null,pathExp:null,journalText:'',saved:false};
-
+let S={screen:'onboard',tab:'today',name:'',entries:[],path:null,playRune:false,showMeaning:false,libSel:null,pathExp:null,runeText:'',pathText:'',savedRune:false,savedPath:false,editRuneIdx:-1,editPathIdx:-1};
+  
 function loadState(){
   try{const n=localStorage.getItem('rr_name2');if(n)S.name=n;}catch{}
   try{const sc=localStorage.getItem('rr_sub2');if(sc==='true')S.screen='app';}catch{}
@@ -386,14 +386,6 @@ function loadState(){
 function doOnboard(n){S.name=n;S.screen='subscribe';localStorage.setItem('rr_name2',n);render();}
 function doSubscribe(){S.screen='app';localStorage.setItem('rr_sub2','true');render();}
 function setPath(id){S.path=id;S.tab='paths';localStorage.setItem('rr_path2',id);render();}
-function saveEntry(){
-  if(!S.journalText.trim())return;
-  const r=todayRune();
-  S.entries.push({rune:r.name,glyph:r.glyph,text:S.journalText,date:new Date().toISOString(),pathId:S.path||null,pathDay:S.path?pathDay(S.path)+1:null});
-  S.journalText='';S.saved=true;
-  localStorage.setItem('rr_entries2',JSON.stringify(S.entries));
-  render();setTimeout(()=>{S.saved=false;render();},2000);
-}
 
 function todayRune(){
   let seed=localStorage.getItem('rr_seed');
@@ -415,7 +407,44 @@ function todayRune(){
   return days;
 }
 function fmtDate(iso){return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric'});}
-function themes(){
+function todaysRuneEntry(){
+  const t=new Date().toDateString();
+  for(let i=S.entries.length-1;i>=0;i--){
+    if(new Date(S.entries[i].date).toDateString()===t&&!S.entries[i].pathId)return{entry:S.entries[i],index:i};
+  }
+  return null;
+}
+function todaysPathEntry(){
+  const t=new Date().toDateString();
+  for(let i=S.entries.length-1;i>=0;i--){
+    if(new Date(S.entries[i].date).toDateString()===t&&S.entries[i].pathId)return{entry:S.entries[i],index:i};
+  }
+  return null;
+}
+function saveRuneEntry(){
+  if(!S.runeText.trim())return;
+  const r=todayRune();
+  const entry={rune:r.name,glyph:r.glyph,text:S.runeText,date:new Date().toISOString(),pathId:null,pathDay:null};
+  if(S.editRuneIdx>=0){S.entries[S.editRuneIdx]=entry;S.editRuneIdx=-1;}
+  else S.entries.push(entry);
+  S.runeText='';S.savedRune=true;
+  localStorage.setItem('rr_entries2',JSON.stringify(S.entries));
+  render();setTimeout(()=>{S.savedRune=false;render();},2000);
+}
+function savePathEntry(){
+  if(!S.pathText.trim())return;
+  const r=todayRune();
+  const entry={rune:r.name,glyph:r.glyph,text:S.pathText,date:new Date().toISOString(),pathId:S.path,pathDay:pathDay(S.path)+1};
+  if(S.editPathIdx>=0){S.entries[S.editPathIdx]=entry;S.editPathIdx=-1;}
+  else S.entries.push(entry);
+  S.pathText='';S.savedPath=true;
+  localStorage.setItem('rr_entries2',JSON.stringify(S.entries));
+  render();setTimeout(()=>{S.savedPath=false;render();},2000);
+}
+function editRuneEntry(idx){S.editRuneIdx=idx;S.runeText=S.entries[idx].text;render();}
+function editPathEntry(idx){S.editPathIdx=idx;S.pathText=S.entries[idx].text;render();}
+  
+  function themes(){
   const w={};
   const stop=new Set(['the','and','that','this','what','where','you','your','have','been','from','with','not','are','but','for','more','would','will','when','into','like','just','they','them','there','then','also','some','all','its','was','were','about']);
   S.entries.forEach(e=>e.text.toLowerCase().split(/\W+/).forEach(wd=>{if(wd.length>4&&!stop.has(wd))w[wd]=(w[wd]||0)+1;}));
@@ -525,41 +554,26 @@ function renderToday(){
       </button>
     </div>
     ${S.showMeaning?`<div class="card fadeu"><p class="mtxt">${r.meaning}</p><div class="div"></div><div class="rlbl">Narrative rewrite</div><div class="rtxt">${r.rewrite}</div></div>`:''}
-   <div class="slbl">Today's prompt</div>
+ <div class="slbl">Today's prompt</div>
     <div class="card">
+      <div style="margin-bottom:8px"><span style="font-size:10px;color:#7a7080;font-style:italic">Daily rune prompt</span></div>
+      <p class="ptxt">"${r.prompt}"</p>
       ${(()=>{
-        if(S.path){
-          const p=PATHS.find(x=>x.id===S.path);
-          const day=Math.min(pathDay(S.path), p.days-1);
-          const prompt=p.prompts[day];
-          return `
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-              <span style="font-family:'Cinzel',serif;font-size:9px;color:#7a6030;letter-spacing:.1em">${p.title.toUpperCase()} · DAY ${day+1} OF ${p.days}</span>
-              <span style="font-size:9px;color:#7a7080;font-style:italic">Path prompt</span>
-            </div>
-            <p class="ptxt">"${prompt}"</p>`;
-        } else {
-          return `
-            <div style="margin-bottom:10px">
-              <span style="font-size:10px;color:#7a7080;font-style:italic">Daily rune prompt</span>
-            </div>
-            <p class="ptxt">"${r.prompt}"</p>`;
+        const te=todaysRuneEntry();
+        if(te&&S.editRuneIdx<0){
+          return `<div style="background:#0e0e18;border:0.5px solid #1e1c2a;border-radius:9px;padding:10px 12px;font-size:14px;color:#ede5d8;font-family:'Crimson Pro',serif;line-height:1.6;margin-bottom:8px">${te.entry.text}</div><button id="editrunebtn" style="background:none;border:0.5px solid #342c1a;border-radius:7px;padding:5px 14px;color:#7a6030;font-size:11px;font-family:'Cinzel',serif;letter-spacing:.06em;cursor:pointer">Edit entry</button>`;
         }
+        return `<textarea class="jinp" id="runeinp" rows="4" placeholder="Write what comes up...">${S.runeText||''}</textarea><div style="display:flex;justify-content:space-between;align-items:center"><button class="sbtn" id="saverunebtn">${S.savedRune?'Saved':'Save entry'}</button><span style="font-size:10px;color:#7a7080" id="runecount">${(S.runeText||'').length} chars</span></div>`;
       })()}
-      <textarea class="jinp" id="jinp" rows="4" placeholder="Write what comes up...">${S.journalText||''}</textarea>
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <button class="sbtn" id="savebtn">${S.saved?'Saved':'Save entry'}</button>
-        <span style="font-size:10px;color:#7a7080" id="charcount">${(S.journalText||'').length} chars</span>
-      </div>
     </div>
-    <div class="slbl">This week</div>
-    <div class="card" style="padding-bottom:12px">
-      <div class="drow">
-        ${days.map((d,i)=>`<div class="dd ${i<dow?'done':i===dow?'dtoday':'doff'}">${d}</div>`).join('')}
-      </div>
-      <div style="font-size:11px;color:#7a7080;margin-top:7px;font-style:italic">${S.entries.length} ${S.entries.length===1?'entry':'entries'} total.</div>
-    </div>
-  </div>`;
+    ${S.path?(()=>{
+      const p=PATHS.find(x=>x.id===S.path);
+      const day=Math.min(pathDay(S.path),p.days-1);
+      const prompt=p.prompts[day];
+      const te=todaysPathEntry();
+      return `<div class="slbl" style="padding-top:6px">${p.title.toUpperCase()} · DAY ${day+1} OF ${p.days}</div><div class="card"><div style="margin-bottom:8px"><span style="font-size:10px;color:#7a7080;font-style:italic">Path prompt</span></div><p class="ptxt">"${prompt}"</p>${te&&S.editPathIdx<0?`<div style="background:#0e0e18;border:0.5px solid #1e1c2a;border-radius:9px;padding:10px 12px;font-size:14px;color:#ede5d8;font-family:'Crimson Pro',serif;line-height:1.6;margin-bottom:8px">${te.entry.text}</div><button id="editpathbtn" style="background:none;border:0.5px solid #342c1a;border-radius:7px;padding:5px 14px;color:#7a6030;font-size:11px;font-family:'Cinzel',serif;letter-spacing:.06em;cursor:pointer">Edit entry</button>`:`<textarea class="jinp" id="pathinp" rows="4" placeholder="Write what comes up...">${S.pathText||''}</textarea><div style="display:flex;justify-content:space-between;align-items:center"><button class="sbtn" id="savepathbtn">${S.savedPath?'Saved':'Save entry'}</button><span style="font-size:10px;color:#7a7080" id="pathcount">${(S.pathText||'').length} chars</span></div>`}</div>`;
+    })():''}
+  </div>`;  
 }
 
 function bindToday(){
@@ -567,10 +581,18 @@ function bindToday(){
   if(pb)pb.onclick=()=>{S.playRune=true;render();setTimeout(()=>{S.playRune=false;render();},4000);};
   const tm=document.getElementById('togglemean');
   if(tm)tm.onclick=()=>{S.showMeaning=!S.showMeaning;render();};
-  const ji=document.getElementById('jinp');
-  if(ji){ji.oninput=e=>{S.journalText=e.target.value;const cc=document.getElementById('charcount');if(cc)cc.textContent=e.target.value.length+' chars';};ji.value=S.journalText||'';}
-  const sv=document.getElementById('savebtn');
-  if(sv)sv.onclick=saveEntry;
+  const ri=document.getElementById('runeinp');
+  if(ri){ri.oninput=e=>{S.runeText=e.target.value;const cc=document.getElementById('runecount');if(cc)cc.textContent=e.target.value.length+' chars';};ri.value=S.runeText||'';}
+  const sr=document.getElementById('saverunebtn');
+  if(sr)sr.onclick=saveRuneEntry;
+  const er=document.getElementById('editrunebtn');
+  if(er){const te=todaysRuneEntry();if(te)er.onclick=()=>editRuneEntry(te.index);}
+  const pi=document.getElementById('pathinp');
+  if(pi){pi.oninput=e=>{S.pathText=e.target.value;const cc=document.getElementById('pathcount');if(cc)cc.textContent=e.target.value.length+' chars';};pi.value=S.pathText||'';}
+  const sp=document.getElementById('savepathbtn');
+  if(sp)sp.onclick=savePathEntry;
+  const ep=document.getElementById('editpathbtn');
+  if(ep){const te=todaysPathEntry();if(te)ep.onclick=()=>editPathEntry(te.index);}
 }
 
 function renderJournal(){
