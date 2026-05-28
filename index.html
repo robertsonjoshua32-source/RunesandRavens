@@ -257,8 +257,13 @@ function saveEntry(){
 }
 
 function todayRune(){
+  let seed=localStorage.getItem('rr_seed');
+  if(!seed){
+    seed=Math.floor(Math.random()*24);
+    localStorage.setItem('rr_seed',seed);
+  }
   const days=Math.floor((new Date()-new Date(2024,0,1))/86400000);
-  return RUNES[days%RUNES.length];
+  return RUNES[(days+parseInt(seed))%RUNES.length];
 }
 function fmtDate(iso){return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric'});}
 function themes(){
