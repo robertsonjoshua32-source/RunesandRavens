@@ -809,8 +809,7 @@ function renderDetail(){
 }
 function bindDetail(){const bb=document.getElementById('backbtn');if(bb)bb.onclick=()=>{S.libSel=null;render();};}
 let audioCtx=null,audioOn=false,drones=[];
-The problem is the master gain starts at 0.7 but the drums are being filtered and routed through chains that cut their actual volume. The throat layer is also too high in the mix relative to the drums. The whole mix needs restructuring. Replace the entire buildDrone function:
-jsfunction buildDrone(){
+function buildDrone(){
   audioCtx=new(window.AudioContext||window.webkitAudioContext)();
   const master=audioCtx.createGain();
   master.gain.setValueAtTime(0,audioCtx.currentTime);
