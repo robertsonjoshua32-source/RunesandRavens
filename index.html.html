@@ -1,0 +1,484 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#07070d;--surf:#0e0e18;--card:#13131f;--cardh:#171726;
+  --gold:#c8a45a;--golds:#e2c98a;--goldd:#7a6030;
+  --crim:#6b2030;--text:#ede5d8;--mut:#7a7080;--dim:#33303a;
+  --bord:#1e1c2a;--bordg:#342c1a;
+}
+body,#app{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,serif}
+.wrap{max-width:400px;margin:0 auto;background:var(--bg);min-height:100vh;display:flex;flex-direction:column}
+.scroll{flex:1;overflow-y:auto;padding-bottom:68px}
+.scroll::-webkit-scrollbar{width:0}
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:400px;background:var(--surf);border-top:0.5px solid var(--bord);display:flex;z-index:100}
+.tb{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 6px;background:none;border:none;cursor:pointer;font-size:9px;color:var(--mut);font-family:'Cinzel',serif;letter-spacing:.05em;transition:color .2s}
+.tb.on{color:var(--gold)}
+.tb span{font-size:17px;line-height:1}
+.hdr{padding:44px 18px 14px;border-bottom:0.5px solid var(--bord)}
+.brow{display:flex;align-items:center;gap:10px;margin-bottom:3px}
+.bnm{font-family:'Cinzel',serif;font-size:13px;letter-spacing:.12em;color:var(--golds);font-weight:600}
+.bsub{font-size:10px;color:var(--mut);letter-spacing:.06em}
+.hgreet{font-size:12px;color:var(--mut);font-style:italic;margin-top:3px}
+.card{background:var(--card);border:0.5px solid var(--bord);border-radius:13px;padding:16px;margin:10px 14px}
+.cardg{background:var(--card);border:0.5px solid var(--bordg);border-radius:13px;padding:18px;margin:10px 14px;text-align:center}
+.rgl{font-size:58px;color:var(--gold);line-height:1;margin-bottom:6px;text-shadow:0 0 40px var(--goldd);font-family:'Crimson Pro',serif}
+.rnl{font-family:'Cinzel',serif;font-size:20px;font-weight:500;color:var(--golds);letter-spacing:.08em;margin-bottom:3px}
+.rkw{font-family:'Cinzel',serif;font-size:10px;color:var(--mut);letter-spacing:.05em;margin-bottom:14px}
+.abtn{display:inline-flex;align-items:center;gap:7px;background:var(--gold);color:var(--bg);border:none;border-radius:22px;padding:9px 20px;font-size:13px;font-family:'Cinzel',serif;letter-spacing:.06em;cursor:pointer;transition:background .2s;font-weight:500}
+.abtn:hover{background:var(--golds)}
+.abtn.pl{background:var(--crim);color:var(--golds)}
+.anote{font-size:10px;color:var(--mut);margin-top:7px;font-style:italic}
+.slbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.14em;color:var(--mut);padding:12px 18px 5px;text-transform:uppercase}
+.ptxt{font-size:15px;line-height:1.65;color:var(--text);font-style:italic;margin-bottom:12px}
+.jinp{width:100%;background:var(--bg);border:0.5px solid var(--bord);border-radius:9px;padding:10px 12px;font-size:14px;color:var(--text);font-family:'Crimson Pro',serif;line-height:1.6;resize:none;outline:none;transition:border-color .2s}
+.jinp::placeholder{color:var(--dim)}
+.jinp:focus{border-color:var(--goldd)}
+.sbtn{background:none;border:0.5px solid var(--bordg);border-radius:7px;padding:7px 16px;color:var(--gold);font-size:12px;font-family:'Cinzel',serif;letter-spacing:.06em;cursor:pointer;transition:background .2s;margin-top:9px}
+.sbtn:hover{background:var(--cardh)}
+.drow{display:flex;gap:6px;padding:2px 0 5px}
+.dd{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-family:'Cinzel',serif}
+.done{background:var(--goldd);color:var(--golds)}
+.dtoday{background:none;color:var(--gold);border:1.5px solid var(--gold)}
+.doff{background:var(--surf);color:var(--dim)}
+.mtxt{font-size:14px;line-height:1.75;color:var(--text);opacity:.9}
+.div{height:0.5px;background:var(--bord);margin:12px 0}
+.rlbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.12em;color:var(--mut);margin-bottom:7px}
+.rtxt{font-size:15px;color:var(--golds);font-style:italic;line-height:1.6}
+.ecard{background:var(--card);border:0.5px solid var(--bord);border-radius:11px;padding:12px 14px;margin:0 14px 9px;cursor:pointer}
+.ehdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px}
+.erune{font-size:12px;color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.05em}
+.edate{font-size:10px;color:var(--mut)}
+.etxt{font-size:13px;color:var(--mut);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ttags{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 4px}
+.ttag{background:var(--surf);border:0.5px solid var(--bordg);border-radius:13px;padding:4px 11px;font-size:11px;color:var(--golds);font-family:'Cinzel',serif;letter-spacing:.04em}
+.pcard{background:var(--card);border:0.5px solid var(--bord);border-radius:13px;padding:14px;margin:0 14px 9px;cursor:pointer;transition:border-color .2s}
+.pcard:hover{border-color:var(--bordg)}
+.pcard.acp{border-color:var(--goldd)}
+.phdr{display:flex;align-items:center;gap:11px;margin-bottom:7px}
+.picw{font-size:22px;line-height:1}
+.ptitle{font-family:'Cinzel',serif;font-size:13px;color:var(--golds);letter-spacing:.06em;margin-bottom:2px}
+.pdesc{font-size:11px;color:var(--mut)}
+.pbg{height:3px;background:var(--surf);border-radius:2px;margin-top:9px}
+.pfill{height:3px;background:var(--gold);border-radius:2px}
+.pabout{font-size:13px;line-height:1.7;color:var(--text);opacity:.85;margin:9px 0}
+.pstrt{background:none;border:0.5px solid var(--goldd);border-radius:7px;padding:8px 16px;color:var(--gold);font-size:12px;font-family:'Cinzel',serif;letter-spacing:.06em;cursor:pointer;transition:background .2s;margin-top:5px}
+.pstrt:hover{background:var(--cardh)}
+.lgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:4px 14px 12px}
+.li{background:var(--card);border:0.5px solid var(--bord);border-radius:11px;padding:13px 7px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.li:hover{border-color:var(--bordg);background:var(--cardh)}
+.lglyph{font-size:26px;color:var(--gold);line-height:1;margin-bottom:5px;font-family:'Crimson Pro',serif}
+.lname{font-family:'Cinzel',serif;font-size:9px;color:var(--golds);letter-spacing:.06em}
+.lkw{font-size:8px;color:var(--mut);margin-top:2px;line-height:1.3}
+.doverlay{position:fixed;inset:0;background:rgba(7,7,13,.95);z-index:200;max-width:400px;left:50%;transform:translateX(-50%);overflow-y:auto;padding-bottom:40px}
+.dhdr{display:flex;align-items:center;justify-content:space-between;padding:44px 18px 14px;border-bottom:0.5px solid var(--bord)}
+.bbtn{background:none;border:none;color:var(--mut);font-size:20px;cursor:pointer;padding:4px;line-height:1}
+.obwrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 26px;text-align:center}
+.obinp{width:100%;background:var(--surf);border:0.5px solid var(--bord);border-radius:9px;padding:13px 16px;font-size:16px;color:var(--text);font-family:'Crimson Pro',serif;outline:none;margin-bottom:12px;transition:border-color .2s}
+.obinp:focus{border-color:var(--goldd)}
+.obinp::placeholder{color:var(--dim)}
+.obbtn{width:100%;background:var(--gold);border:none;border-radius:9px;padding:14px;font-size:14px;color:var(--bg);font-family:'Cinzel',serif;letter-spacing:.08em;cursor:pointer;transition:background .2s}
+.obbtn:hover{background:var(--golds)}
+.suf{display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:0.5px solid var(--bord)}
+.suf:last-of-type{border-bottom:none}
+.suic{font-size:17px;color:var(--gold);min-width:22px;text-align:center;margin-top:2px}
+.sftitle{font-family:'Cinzel',serif;font-size:12px;color:var(--golds);letter-spacing:.04em;margin-bottom:2px}
+.sfdesc{font-size:12px;color:var(--mut);line-height:1.5}
+.subtn{width:100%;background:var(--gold);border:none;border-radius:9px;padding:14px;font-size:14px;color:var(--bg);font-family:'Cinzel',serif;letter-spacing:.08em;cursor:pointer;margin-top:14px;transition:background .2s}
+.subtn:hover{background:var(--golds)}
+.badge{background:var(--surf);border:0.5px solid var(--bordg);border-radius:11px;padding:3px 9px;font-size:10px;color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.05em}
+.fadeu{animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+
+<div id="app" style="background:#07070d;min-height:100vh"></div>
+
+<script>
+function svgMark(sz, uid) {
+  const cx=56, cy=50;
+  const rays=[];
+  for(let i=0;i<24;i++){
+    const a=i*Math.PI/12;
+    const x2=(cx+52*Math.cos(a)).toFixed(1);
+    const y2=(cy+52*Math.sin(a)).toFixed(1);
+    const w=i%2===0?0.8:0.4;
+    rays.push(`<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="#c8a45a" stroke-width="${w}" opacity="0.5"/>`);
+  }
+  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:${sz}px;height:${sz}px;flex-shrink:0" aria-hidden="true">
+  <defs>
+    <mask id="cm${uid}">
+      <circle cx="38" cy="50" r="34" fill="white"/>
+      <circle cx="57" cy="50" r="28" fill="black"/>
+    </mask>
+  </defs>
+  ${rays.join('')}
+  <circle cx="38" cy="50" r="34" fill="#c8a45a" mask="url(#cm${uid})" opacity="0.9"/>
+  <circle cx="${cx}" cy="${cy}" r="27" fill="#07070d"/>
+  <path d="M67,61 L75,83" stroke="#c8a45a" stroke-width="0.9" fill="none" opacity="0.8"/>
+  <path d="M69,66 Q75,62 77,67 Q73,68 69,66Z" fill="#c8a45a" opacity="0.72"/>
+  <path d="M69,66 Q64,62 62,67 Q65,68 69,66Z" fill="#c8a45a" opacity="0.72"/>
+  <path d="M71,72 Q77,68 79,73 Q75,74 71,72Z" fill="#c8a45a" opacity="0.72"/>
+  <path d="M71,72 Q66,68 64,73 Q67,74 71,72Z" fill="#c8a45a" opacity="0.72"/>
+  <path d="M73,78 Q78,75 80,80 Q76,81 73,78Z" fill="#c8a45a" opacity="0.72"/>
+  </svg>`;
+}
+
+const RUNES=[
+  {glyph:'ᚠ',name:'Fehu',kw:'Wealth · Flow · Abundance',
+   meaning:'Fehu is not money sitting still. It is energy in motion, resources and vitality that circulate rather than accumulate. Abundance is meant to move. When Fehu appears, the block is rarely lack. It is grip.',
+   prompt:'Where are you holding so tightly that nothing new can enter? What would it look like to receive without immediately redirecting what arrives?',
+   rewrite:'I allow what is mine to move through me without gripping it.'},
+  {glyph:'ᚢ',name:'Uruz',kw:'Strength · Raw Power · Vitality',
+   meaning:'Uruz is the aurochs, the ancient wild ox that could not be domesticated. It is the part of you that is raw, unmanaged, and has never needed approval. The narrative that most suppresses Uruz is the one that says your power is too much.',
+   prompt:'Where are you managing yourself down to make others comfortable? What would you do if you stopped apologizing for the size of your energy?',
+   rewrite:'My strength does not need to be made smaller to be acceptable.'},
+  {glyph:'ᚦ',name:'Thurisaz',kw:'Disruption · Thorn · Gateway',
+   meaning:'Thurisaz is the thorn hedge, painful to touch but marking a threshold. Disruption is not punishment. It is the landscape changing to show you a gate you would never have found on the comfortable path.',
+   prompt:'What disruption in your life right now is actually a gate? What is it keeping you out of, and what is it keeping you in?',
+   rewrite:'What breaks me open is also what lets something new breathe.'},
+  {glyph:'ᚨ',name:'Ansuz',kw:'Voice · Signal · Truth',
+   meaning:"Ansuz is the breath that carries truth through noise. Your voice is one of the most heavily conditioned things you carry. Someone taught you very early how much of your truth was welcome.",
+   prompt:"Whose voice is living in your head as your own? Where are you staying quiet to preserve a peace that was never really peace?",
+   rewrite:'My voice carries truth worth speaking.'},
+  {glyph:'ᚱ',name:'Raidho',kw:'Journey · Rhythm · Right Action',
+   meaning:"Raidho is the wagon wheel turning, not a destination but the rhythm of the journey itself. The question it asks is not whether you are there yet, but whether you are moving in alignment. Suffering often comes from forcing the wheel to turn at someone else's pace.",
+   prompt:'Are you moving at your pace or at the pace others expect? Where does your rhythm feel most like yours, and where does it feel borrowed?',
+   rewrite:'I trust the pace at which I am meant to move.'},
+  {glyph:'ᚲ',name:'Kenaz',kw:'Torch · Knowledge · Clarity',
+   meaning:'Kenaz is the controlled fire, the torch that illuminates what the dark was hiding. It is the moment understanding arrives and reorders everything. When Kenaz appears, something is about to become clear whether you are ready or not.',
+   prompt:'What have you already half-known but been unwilling to see fully? What truth would rearrange your life if you let yourself look directly at it?',
+   rewrite:'I am not afraid of what clarity reveals.'},
+  {glyph:'ᚷ',name:'Gebo',kw:'Gift · Exchange · Partnership',
+   meaning:'Gebo is the crossing mark, the balance of giving and receiving. It is not sacrifice. Gifting carries reciprocity as its inherent structure. One-directional giving is not Gebo. It is depletion wearing the mask of virtue.',
+   prompt:'Where in your relationships is the exchange genuinely balanced? Where are you giving from depletion and calling it love?',
+   rewrite:'I give from fullness and I receive without guilt.'},
+  {glyph:'ᚹ',name:'Wunjo',kw:'Joy · Harmony · Belonging',
+   meaning:'Wunjo is the feeling of belonging so completely that joy arises without effort. Many people carry a hidden narrative that says joy is temporary, that feeling good is a warning sign. If you learned early that peace precedes danger, you will find ways to disrupt Wunjo every time it arrives.',
+   prompt:'Do you allow yourself to simply be happy, or do you scan for what might be wrong? Where did you learn that joy needed to be earned or defended?',
+   rewrite:'I am allowed to be at peace without bracing for what comes next.'},
+  {glyph:'ᚺ',name:'Hagalaz',kw:'Hail · Disruption · Transformation',
+   meaning:'Hagalaz is hail, destructive on contact but melting into water that feeds the ground. It is the rune of unavoidable disruption. What it destroys was not as solid as it appeared. The grief is real. The necessity is also real.',
+   prompt:'What in your life is cracking right now that you have been holding together by will alone? What would you build differently if you stopped patching what is already broken?',
+   rewrite:'What falls away makes room for what is actually mine.'},
+  {glyph:'ᚾ',name:'Nauthiz',kw:'Need · Constraint · Friction',
+   meaning:'Nauthiz is the fire bow, the friction needed to produce flame. Need is not weakness. Constraint is not punishment. Your limitations are in conversation with your purpose.',
+   prompt:'Where is your current constraint actually shaping you rather than stopping you? What are you becoming by being forced through this narrow place?',
+   rewrite:'My constraints are teaching me what I cannot learn in comfort.'},
+  {glyph:'ᛁ',name:'Isa',kw:'Ice · Stillness · Pause',
+   meaning:'Isa is ice, everything stopped. The river is not gone. It is suspended. When life forces stillness on you, the narrative that suffers most is the one built on productivity as identity. Isa asks you to exist without producing.',
+   prompt:'What does stillness reveal in you when there is nothing to do and nowhere to be? What do you discover you are when you are not being useful?',
+   rewrite:'My worth is not contingent on my output.'},
+  {glyph:'ᛃ',name:'Jera',kw:'Harvest · Cycles · Patience',
+   meaning:'Jera is the turning of the full year, planting through harvest. Nothing in Jera is instant. Your work has a season. The harvest comes when the season arrives, not when you demand it.',
+   prompt:'What seeds did you plant months or years ago that are now quietly ready? Where are you trying to rush a harvest that is already underway on its own timetable?',
+   rewrite:'I trust that what I have tended will arrive in its season.'},
+  {glyph:'ᛇ',name:'Eihwaz',kw:'Yew · Endurance · Axis',
+   meaning:'Eihwaz is the yew tree, growing at the edge of graveyards because it lives across thresholds. It connects the above and the below, the living and the dead. Where you have endured without collapsing, the yew is already growing.',
+   prompt:'What have you survived that you have not fully acknowledged? Where is the evidence of your endurance that you have been too busy to honor?',
+   rewrite:'I have already survived what I thought would break me.'},
+  {glyph:'ᛈ',name:'Perthro',kw:'Mystery · Fate · The Unknown',
+   meaning:'Perthro is the lot-cup, the container of fate before it is poured out. It does not promise good or bad outcomes. It promises that what is inside will be revealed. The deepest fear most people carry is not of bad outcomes. It is of not knowing.',
+   prompt:'Where are you manufacturing false certainty to avoid sitting with the not-yet-known? What would you do differently if you trusted that not knowing was a livable state?',
+   rewrite:'I can hold uncertainty without collapsing it into false answers.'},
+  {glyph:'ᛉ',name:'Algiz',kw:'Protection · Reach · Connection',
+   meaning:'Algiz is the elk sedge, a marsh grass whose edges cut anything that grabs it carelessly. Protection is not a wall. It is awareness, reach, and the wisdom to know the difference between a threat and a teacher.',
+   prompt:'What are you protecting yourself from that may no longer be dangerous? Where is your protection keeping out what you actually need?',
+   rewrite:'I know the difference between a boundary that protects me and one that isolates me.'},
+  {glyph:'ᛊ',name:'Sowilo',kw:'Sun · Will · Victory',
+   meaning:'Sowilo is the sun, the direct experience of will and purpose burning in the same direction. It is the rune of aligned action. When your will matches your truth, obstacles lose their authority.',
+   prompt:'What would you pursue without hesitation if you were certain your will and your truth were pointing the same direction? What is misaligned right now?',
+   rewrite:'My will and my truth are moving together.'},
+  {glyph:'ᛏ',name:'Tiwaz',kw:'Justice · Sacrifice · Direction',
+   meaning:'Tiwaz is the one-handed god who sacrificed his hand knowing what it would cost him. Justice sometimes requires personal loss. Direction sometimes requires leaving something you love behind.',
+   prompt:'What sacrifice are you being asked to make that you already know is right? What are you holding onto past its time because the loss feels too large to name?',
+   rewrite:'I can do what is right even when it costs me something real.'},
+  {glyph:'ᛒ',name:'Berkano',kw:'Birch · New Beginnings · Growth',
+   meaning:'Berkano is the birch tree, the first to return after a forest burns. It does not wait for perfect conditions. It grows in the ash. New beginnings do not look like beginnings. They look like small, persistent life insisting on itself in impossible soil.',
+   prompt:'Where is something small already growing in you that you have been dismissing as too insignificant to tend? What new beginning is establishing itself in the aftermath of something that ended?',
+   rewrite:'New life does not need permission to grow in me.'},
+  {glyph:'ᛖ',name:'Ehwaz',kw:'Horse · Movement · Trust',
+   meaning:'Ehwaz is the horse and rider, not the horse alone and not the rider alone, but the relationship between them. Movement that lasts requires trust built in both directions. Where you are moving but feel resistance, the relationship has broken down.',
+   prompt:'Where are you trying to move forward while fighting your own body, instincts, or a key relationship? What would it take to trust the thing carrying you?',
+   rewrite:'I move forward in trust, not in struggle.'},
+  {glyph:'ᛗ',name:'Mannaz',kw:'Humanity · Self · Community',
+   meaning:'Mannaz is the human being in full, neither isolated nor dissolved into the collective. Identity is not made alone. It is made in the space between people. The question is which relationships have been narrating you.',
+   prompt:'Who has been allowed to define you that you have not consciously chosen? What is the story about who you are that was written without your input?',
+   rewrite:'I author the story of who I am.'},
+  {glyph:'ᛚ',name:'Laguz',kw:'Water · Intuition · Flow',
+   meaning:'Laguz is water, taking the shape of whatever contains it but never destroyed. It seeps through what it cannot break. Your intuition is the deepest water you carry.',
+   prompt:'What is your body telling you right now that your mind keeps overriding? What would you do if you trusted what you already feel rather than waiting for proof?',
+   rewrite:'I trust what I know before I can explain it.'},
+  {glyph:'ᛜ',name:'Ingwaz',kw:'Seed · Potential · Inner Work',
+   meaning:'Ingwaz is the sealed seed, everything needed for growth compressed into a waiting form. It is the rune of inner work before outer expression. The most important work you will ever do happens in private, in the dark, before anyone can see it.',
+   prompt:'What are you growing in private right now that is not yet ready to be shown? What inner work have you been avoiding that your next chapter requires?',
+   rewrite:'My unseen inner work is the foundation of everything visible.'},
+  {glyph:'ᛞ',name:'Dagaz',kw:'Dawn · Breakthrough · Clarity',
+   meaning:'Dagaz is the moment the sky turns, that specific threshold between dark and light when everything is both at once. Breakthroughs do not arrive slowly. They arrive in an instant after long preparation. You are never as far from the dawn as the dark makes it feel.',
+   prompt:'What breakthrough are you standing on the edge of that you cannot quite see yet? What has the long dark period been preparing in you that is almost ready to emerge?',
+   rewrite:'I am on the edge of a clarity I have been preparing for.'},
+  {glyph:'ᛟ',name:'Othala',kw:'Inheritance · Home · Ancestral Wisdom',
+   meaning:'Othala is the enclosed estate, the ancestral home, the inherited land. What was handed down to you is not all yours to keep. Some of it needs to be held. Some of it needs to be consciously released.',
+   prompt:'What did your family hand you that you have been carrying without examining? Which inherited stories are yours, and which need to end with your generation?',
+   rewrite:'I receive what is mine from my lineage and I release what was never mine to carry.'},
+];
+
+const PATHS=[
+  {id:'shadow',icon:'🌑',title:'Shadow Work',desc:'30 days · What you\'ve buried',
+   about:'A structured journey through the parts of yourself you have been managing around rather than meeting. Built around the runes of disruption, constraint, and endurance.',days:30},
+  {id:'relations',icon:'🔗',title:'Relationships & Boundaries',desc:'30 days · Who you allow in',
+   about:'Exploring the stories you carry about love, belonging, and where you end and others begin. Built around Gebo, Wunjo, Algiz, and Mannaz.',days:30},
+  {id:'ancestral',icon:'🌿',title:'Ancestral Patterns',desc:'21 days · What was handed down',
+   about:'A 21-day journey through inherited narratives. What your lineage gave you, what it cost you, and what you choose to carry forward.',days:21},
+  {id:'power',icon:'🔥',title:'Reclaiming Your Power',desc:'14 days · Stop making yourself small',
+   about:'A direct path for anyone who has been managing their energy down to keep the peace. Uruz, Sowilo, Tiwaz.',days:14},
+];
+
+let S={screen:'onboard',tab:'today',name:'',entries:[],path:null,playRune:false,showMeaning:false,libSel:null,pathExp:null,journalText:'',saved:false};
+
+async function loadState(){
+  try{const n=await window.storage.get('rr_name2');if(n?.value)S.name=n.value;}catch{}
+  try{const sc=await window.storage.get('rr_sub2');if(sc?.value==='true')S.screen='app';}catch{}
+  try{const e=await window.storage.get('rr_entries2');if(e?.value)S.entries=JSON.parse(e.value);}catch{}
+  try{const p=await window.storage.get('rr_path2');if(p?.value)S.path=p.value;}catch{}
+  render();
+}
+
+async function doOnboard(n){S.name=n;S.screen='subscribe';try{await window.storage.set('rr_name2',n);}catch{}render();}
+async function doSubscribe(){S.screen='app';try{await window.storage.set('rr_sub2','true');}catch{}render();}
+async function setPath(id){S.path=id;S.tab='paths';try{await window.storage.set('rr_path2',id);}catch{}render();}
+async function saveEntry(){
+  if(!S.journalText.trim())return;
+  const r=todayRune();
+  S.entries.push({rune:r.name,glyph:r.glyph,text:S.journalText,date:new Date().toISOString()});
+  S.journalText='';S.saved=true;
+  try{await window.storage.set('rr_entries2',JSON.stringify(S.entries));}catch{}
+  render();setTimeout(()=>{S.saved=false;render();},2000);
+}
+
+function todayRune(){
+  const days=Math.floor((new Date()-new Date(2024,0,1))/86400000);
+  return RUNES[days%RUNES.length];
+}
+function fmtDate(iso){return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+function themes(){
+  const w={};
+  const stop=new Set(['the','and','that','this','what','where','you','your','have','been','from','with','not','are','but','for','more','would','will','when','into','like','just','they','them','there','then','also','some','all','its','was','were','about']);
+  S.entries.forEach(e=>e.text.toLowerCase().split(/\W+/).forEach(wd=>{if(wd.length>4&&!stop.has(wd))w[wd]=(w[wd]||0)+1;}));
+  return Object.entries(w).sort((a,b)=>b[1]-a[1]).slice(0,6);
+}
+
+function render(){
+  const app=document.getElementById('app');
+  if(!app)return;
+  if(S.screen==='onboard'){app.innerHTML=renderOnboard();bindOnboard();return;}
+  if(S.screen==='subscribe'){app.innerHTML=renderSub();bindSub();return;}
+  app.innerHTML=renderApp();bindApp();
+}
+
+function renderOnboard(){
+  return `<div class="obwrap fadeu">
+    ${svgMark(96,'ob')}
+    <div style="font-family:'Cinzel',serif;font-size:19px;letter-spacing:.12em;color:#e2c98a;font-weight:600;margin:14px 0 8px">Runes &amp; Ravens</div>
+    <div style="font-size:14px;color:#7a7080;line-height:1.7;font-style:italic;max-width:270px;margin-bottom:32px">A daily self-discovery practice built around the 24 Elder Futhark runes and inner narrative work.</div>
+    <input class="obinp" id="obname" placeholder="Your first name" value="${S.name||''}"/>
+    <button class="obbtn" id="obgo">Enter</button>
+    <div style="font-size:10px;color:#7a7080;margin-top:13px;line-height:1.5;font-style:italic">Created by Diana Robertson · Runes and Ravens LLC</div>
+  </div>`;
+}
+function bindOnboard(){
+  document.getElementById('obgo').onclick=()=>{const n=document.getElementById('obname').value.trim();if(n)doOnboard(n);};
+  document.getElementById('obname').onkeydown=e=>{if(e.key==='Enter'){const n=e.target.value.trim();if(n)doOnboard(n);}};
+}
+
+function renderSub(){
+  const feats=[
+    {ic:'🌙',t:'Daily rune pull',d:"A new rune every morning, rotated through all 24 Elder Futhark runes with Diana's written interpretation."},
+    {ic:'🎙️',t:"Diana's voice readings",d:"Pre-recorded audio for every rune in her own words, available whenever you open the app."},
+    {ic:'📖',t:'Inner narrative journal',d:'Write daily. The app surfaces recurring themes from your entries so you can see your patterns over time.'},
+    {ic:'🔥',t:'Structured reading paths',d:'Shadow work, relationships, ancestral patterns. 14 to 30 day journeys built for this practice.'},
+    {ic:'ᛟ',t:'Full rune library',d:'All 24 Elder Futhark runes with meanings, journal prompts, and narrative rewrites.'},
+  ];
+  return `<div class="fadeu" style="padding-bottom:30px">
+    <div style="text-align:center;padding:44px 22px 22px">
+      ${svgMark(80,'sb')}
+      <div style="font-family:'Cinzel',serif;font-size:17px;color:#e2c98a;letter-spacing:.1em;margin:12px 0 6px">Runes &amp; Ravens</div>
+      <div style="font-size:13px;color:#7a7080;font-style:italic;line-height:1.7;max-width:270px;margin:0 auto">A daily practice in Diana's voice, built to run whenever you need it.</div>
+    </div>
+    <div class="card">
+      ${feats.map(f=>`<div class="suf"><div class="suic">${f.ic}</div><div><div class="sftitle">${f.t}</div><div class="sfdesc">${f.d}</div></div></div>`).join('')}
+      <div style="text-align:center;padding:16px 0 4px">
+        <span style="font-family:'Cinzel',serif;font-size:30px;color:#e2c98a;font-weight:600">$8</span>
+        <span style="font-size:13px;color:#7a7080"> / month</span>
+        <div style="font-size:11px;color:#7a7080;margin-top:3px;font-style:italic">Cancel any time.</div>
+      </div>
+      <button class="subtn" id="subbtn">Begin the practice</button>
+      <div style="font-size:10px;color:#7a7080;text-align:center;margin-top:10px;font-style:italic">Secure payment via Stripe</div>
+    </div>
+  </div>`;
+}
+function bindSub(){document.getElementById('subbtn').onclick=doSubscribe;}
+
+function renderApp(){
+  const tabs=[{id:'today',ic:'🌙',lb:'Today'},{id:'journal',ic:'📖',lb:'Journal'},{id:'paths',ic:'🔥',lb:'Paths'},{id:'library',ic:'ᛈ',lb:'Library'}];
+  let screen='';
+  if(S.tab==='today')screen=renderToday();
+  else if(S.tab==='journal')screen=renderJournal();
+  else if(S.tab==='paths')screen=renderPaths();
+  else screen=renderLibrary();
+  return `<div class="wrap">
+    <div class="scroll">${screen}${S.libSel?renderDetail():''}</div>
+    <div class="tabbar">${tabs.map(t=>`<button class="tb${S.tab===t.id?' on':''}" data-tab="${t.id}"><span>${t.ic}</span>${t.lb}</button>`).join('')}</div>
+  </div>`;
+}
+function bindApp(){
+  document.querySelectorAll('[data-tab]').forEach(b=>{b.onclick=()=>{S.tab=b.dataset.tab;S.libSel=null;render();};});
+  if(S.tab==='today')bindToday();
+  if(S.tab==='paths')bindPaths();
+  if(S.tab==='library')bindLibrary();
+  if(S.libSel)bindDetail();
+}
+
+function renderToday(){
+  const r=todayRune();
+  const h=new Date().getHours();
+  const gr=h<12?'morning':h<17?'afternoon':'evening';
+  const dow=new Date().getDay();
+  const days=['S','M','T','W','Th','F','S'];
+  return `<div class="fadeu">
+    <div class="hdr">
+      <div class="brow">
+        ${svgMark(46,'hd')}
+        <div>
+          <div class="bnm">Runes &amp; Ravens</div>
+          <div class="bsub">Diana Robertson</div>
+        </div>
+      </div>
+      <div class="hgreet">Good ${gr}${S.name?', '+S.name:''}.</div>
+    </div>
+    <div class="cardg">
+      <div class="rgl">${r.glyph}</div>
+      <div class="rnl">${r.name}</div>
+      <div class="rkw">${r.kw}</div>
+      <button class="abtn${S.playRune?' pl':''}" id="playbtn">
+        ${S.playRune?'&#9646;&#9646; Playing Diana\'s reading...':'&#9654; Diana\'s reading'}
+      </button>
+      <div class="anote">${S.playRune?'Audio uploads here once Diana records her readings.':'Pre-recorded interpretation'}</div>
+    </div>
+    <div style="text-align:center;padding-top:2px">
+      <button id="togglemean" style="background:none;border:none;color:#7a7080;font-size:11px;font-family:'Cinzel',serif;letter-spacing:.07em;cursor:pointer">
+        ${S.showMeaning?'hide meaning':'read the full meaning'}
+      </button>
+    </div>
+    ${S.showMeaning?`<div class="card fadeu"><p class="mtxt">${r.meaning}</p><div class="div"></div><div class="rlbl">Narrative rewrite</div><div class="rtxt">${r.rewrite}</div></div>`:''}
+    <div class="slbl">Today's prompt</div>
+    <div class="card">
+      <p class="ptxt">"${r.prompt}"</p>
+      <textarea class="jinp" id="jinp" rows="4" placeholder="Write what comes up...">${S.journalText||''}</textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <button class="sbtn" id="savebtn">${S.saved?'Saved':'Save entry'}</button>
+        <span style="font-size:10px;color:#7a7080" id="charcount">${(S.journalText||'').length} chars</span>
+      </div>
+    </div>
+    <div class="slbl">This week</div>
+    <div class="card" style="padding-bottom:12px">
+      <div class="drow">
+        ${days.map((d,i)=>`<div class="dd ${i<dow?'done':i===dow?'dtoday':'doff'}">${d}</div>`).join('')}
+      </div>
+      <div style="font-size:11px;color:#7a7080;margin-top:7px;font-style:italic">${S.entries.length} ${S.entries.length===1?'entry':'entries'} total.</div>
+    </div>
+  </div>`;
+}
+function bindToday(){
+  const pb=document.getElementById('playbtn');
+  if(pb)pb.onclick=()=>{S.playRune=true;render();setTimeout(()=>{S.playRune=false;render();},4000);};
+  const tm=document.getElementById('togglemean');
+  if(tm)tm.onclick=()=>{S.showMeaning=!S.showMeaning;render();};
+  const ji=document.getElementById('jinp');
+  if(ji){ji.oninput=e=>{S.journalText=e.target.value;const cc=document.getElementById('charcount');if(cc)cc.textContent=e.target.value.length+' chars';};ji.value=S.journalText||'';}
+  const sv=document.getElementById('savebtn');
+  if(sv)sv.onclick=saveEntry;
+}
+
+function renderJournal(){
+  const th=themes();
+  if(S.entries.length===0){
+    return `<div class="fadeu">
+      <div class="hdr"><div class="bnm" style="font-family:'Cinzel',serif;color:#e2c98a;font-size:15px;letter-spacing:.1em">Inner Narrative</div><div class="hgreet">Your patterns live here.</div></div>
+      <div class="card" style="text-align:center;padding:34px 18px">
+        <div style="font-size:34px;margin-bottom:12px;color:#7a6030">ᛈ</div>
+        <div style="font-size:14px;color:#7a7080;font-style:italic;line-height:1.7">No entries yet. Return to Today and write your first reflection.</div>
+      </div>
+    </div>`;
+  }
+  return `<div class="fadeu">
+    <div class="hdr">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div class="bnm" style="font-family:'Cinzel',serif;color:#e2c98a;font-size:15px;letter-spacing:.1em">Inner Narrative</div><div class="hgreet">${S.entries.length} ${S.entries.length===1?'entry':'entries'} written.</div></div>
+        <span class="badge">${S.entries.length} total</span>
+      </div>
+    </div>
+    ${th.length>0?`<div class="slbl">Themes surfacing</div><div class="ttags">${th.map(([w,c])=>`<span class="ttag">${w} · ${c}x</span>`).join('')}</div>`:''}
+    <div class="slbl">Entries</div>
+    ${[...S.entries].reverse().map(e=>`<div class="ecard"><div class="ehdr"><span class="erune">${e.glyph} ${e.rune}</span><span class="edate">${fmtDate(e.date)}</span></div><div class="etxt">${e.text}</div></div>`).join('')}
+  </div>`;
+}
+
+function renderPaths(){
+  return `<div class="fadeu">
+    <div class="hdr"><div class="bnm" style="font-family:'Cinzel',serif;color:#e2c98a;font-size:15px;letter-spacing:.1em">Reading Paths</div><div class="hgreet">Structured journeys in Diana's voice.</div></div>
+    ${S.path?`<div class="slbl">In progress</div>${PATHS.filter(p=>p.id===S.path).map(p=>`<div class="pcard acp"><div class="phdr"><span class="picw">${p.icon}</span><div style="flex:1"><div class="ptitle">${p.title}</div><div class="pdesc">${p.desc}</div></div><span class="badge">Active</span></div><div class="pbg"><div class="pfill" style="width:30%"></div></div><div style="font-size:10px;color:#7a7080;margin-top:5px">Day 9 of ${p.days}</div></div>`).join('')}`:''}
+    <div class="slbl">${S.path?'All paths':'Choose a path'}</div>
+    ${PATHS.map(p=>`
+      <div class="pcard${S.path===p.id?' acp':''}" data-pathid="${p.id}">
+        <div class="phdr"><span class="picw">${p.icon}</span><div><div class="ptitle">${p.title}</div><div class="pdesc">${p.desc}</div></div></div>
+        <div class="pbg"><div class="pfill" style="width:${S.path===p.id?'30':'0'}%"></div></div>
+      </div>
+      ${S.pathExp===p.id?`<div class="card fadeu" style="margin-top:-5px"><p class="pabout">${p.about}</p><button class="pstrt" data-startpath="${p.id}">${S.path===p.id?'Continue path':'Begin this path'}</button></div>`:''}`
+    ).join('')}
+  </div>`;
+}
+function bindPaths(){
+  document.querySelectorAll('[data-pathid]').forEach(c=>{c.onclick=()=>{S.pathExp=S.pathExp===c.dataset.pathid?null:c.dataset.pathid;render();};});
+  document.querySelectorAll('[data-startpath]').forEach(b=>{b.onclick=e=>{e.stopPropagation();setPath(b.dataset.startpath);};});
+}
+
+function renderLibrary(){
+  return `<div class="fadeu">
+    <div class="hdr"><div class="bnm" style="font-family:'Cinzel',serif;color:#e2c98a;font-size:15px;letter-spacing:.1em">Rune Library</div><div class="hgreet">All 24 · Elder Futhark</div></div>
+    <div class="slbl">Elder Futhark</div>
+    <div class="lgrid">${RUNES.map(r=>`<div class="li" data-rune="${r.name}"><div class="lglyph">${r.glyph}</div><div class="lname">${r.name}</div><div class="lkw">${r.kw.split(' · ')[0]}</div></div>`).join('')}</div>
+  </div>`;
+}
+function bindLibrary(){
+  document.querySelectorAll('[data-rune]').forEach(el=>{el.onclick=()=>{S.libSel=el.dataset.rune;render();};});
+}
+
+function renderDetail(){
+  const r=RUNES.find(x=>x.name===S.libSel);if(!r)return'';
+  return `<div class="doverlay fadeu">
+    <div class="dhdr">
+      <button class="bbtn" id="backbtn">&#8592;</button>
+      <div style="font-family:'Cinzel',serif;font-size:11px;color:#7a7080;letter-spacing:.1em">Rune Library</div>
+      <div style="width:28px"></div>
+    </div>
+    <div style="text-align:center;padding:26px 18px 14px">
+      <div class="rgl">${r.glyph}</div>
+      <div class="rnl">${r.name}</div>
+      <div class="rkw">${r.kw}</div>
+    </div>
+    <div class="card"><p class="mtxt">${r.meaning}</p></div>
+    <div class="slbl">Journal prompt</div>
+    <div class="card"><p class="ptxt">"${r.prompt}"</p></div>
+    <div class="slbl">Narrative rewrite</div>
+    <div class="card"><div class="rtxt">${r.rewrite}</div></div>
+    <div style="padding:0 14px;margin-top:4px">
+      <button class="abtn" style="width:100%;justify-content:center">&#9654; Diana's reading</button>
+      <div class="anote" style="text-align:center">Audio uploads here once Diana records her readings</div>
+    </div>
+  </div>`;
+}
+function bindDetail(){const bb=document.getElementById('backbtn');if(bb)bb.onclick=()=>{S.libSel=null;render();};}
+
+loadState();
+</script>
