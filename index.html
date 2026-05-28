@@ -779,8 +779,7 @@ function renderDetail(){
 }
 function bindDetail(){const bb=document.getElementById('backbtn');if(bb)bb.onclick=()=>{S.libSel=null;render();};}
 let audioCtx=null,audioOn=false,drones=[];
-The hum is all sine waves. To get drums and throat singing we need percussion buffers and formant filtering. Replace the entire buildDrone function with this:
-jsfunction buildDrone(){
+function buildDrone(){
   audioCtx=new(window.AudioContext||window.webkitAudioContext)();
   const master=audioCtx.createGain();
   master.gain.setValueAtTime(0,audioCtx.currentTime);
